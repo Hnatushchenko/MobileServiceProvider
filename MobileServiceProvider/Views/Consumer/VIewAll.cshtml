@@ -29,6 +29,38 @@
 		tr:nth-child(even) {
 			background-color: #dddddd;
 		}
+		.remove-icon-container {
+			background-color: none;
+			position: relative;
+			cursor: pointer;
+		}
+		.tip {
+			padding-top: 4px;
+			padding-bottom: 4px;
+			padding-left: 8px;
+			padding-right: 8px;
+			color: gray;
+			border-style: solid;
+			border-width: 1px;
+			border-color: gray;
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			pointer-events: none;
+			opacity: 0;
+			background-color: white;
+		}
+		.remove-icon-container:hover .tip {
+			opacity: 1;
+		}
+		.remove-icon {
+			background-color: none;
+		}
+		.remove-button {
+			padding: 0px;
+			background-color: inherit;
+			border: none;
+		}
 	</style>
 		
 	<script>
@@ -37,6 +69,11 @@
 			var column = document.getElementById("selectedColumn").value;
 			var order = document.getElementById("selectedOrder").value;
 			location.href = window.location.href.split('?')[0] + '?orderby=' + column + '&order=' + order;
+		}
+		
+		function removeClient(id) {
+            console.log(id);
+			location.href = window.location.origin + "/Consumer/Remove?id=" + id;
 		}
 	</script>
 </head>
@@ -70,6 +107,7 @@
 				<th>Абонентська плата</th>
 				<th>Баланс</th>
 				<th>Статус</th>
+				<th>Дії</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -98,6 +136,16 @@
 					<td>@consumer.MonthlyFee</td>
 					<td class="@consumer.Status">@consumer.Balance</td>
 					<td class="@consumer.Status">@consumer.Status</td>
+					<td class="remove-cell">
+						<div class="remove-icon-container">
+							<div class="remove-icon">
+								<button class="remove-button" onclick="removeClient('@consumer.Id.ToString()')">❌</button>
+							</div>
+							<div class="tip">
+								Вилучити
+							</div>
+						</div>
+					</td>
 				</tr>
 			}
 		</tbody>
