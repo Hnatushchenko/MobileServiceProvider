@@ -1,0 +1,124 @@
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\appsettings.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.staticwebassets.runtime.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.exe
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.deps.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.runtimeconfig.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.pdb
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Identity.Client.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Drawing.Common.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Runtime.Caching.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Security.Permissions.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Windows.Extensions.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.csproj.AssemblyReference.cache
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.AssemblyInfoInputs.cache
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.AssemblyInfo.cs
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.csproj.CoreCompileInputs.cache
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.RazorAssemblyInfo.cache
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.RazorAssemblyInfo.cs
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\scopedcss\bundle\MobileServiceProvider.styles.css
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\scopedcss\projectbundle\MobileServiceProvider.bundle.scp.css
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.csproj.CopyComplete
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\refint\MobileServiceProvider.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.pdb
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.genruntimeconfig.cache
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\ref\MobileServiceProvider.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\InitialData\tariffs.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.csproj.AssemblyReference.cache
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.GeneratedMSBuildEditorConfig.editorconfig
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.AssemblyInfoInputs.cache
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.AssemblyInfo.cs
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.csproj.CoreCompileInputs.cache
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.MvcApplicationPartsAssemblyInfo.cache
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.RazorAssemblyInfo.cache
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.RazorAssemblyInfo.cs
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\refint\MobileServiceProvider.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.pdb
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\appsettings.Development.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\appsettings.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\InitialData\ordinarConsumers.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\InitialData\tariffs.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\InitialData\VIPConsumers.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.staticwebassets.runtime.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.exe
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.deps.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.runtimeconfig.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\MobileServiceProvider.pdb
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Identity.Client.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Drawing.Common.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Runtime.Caching.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Security.Permissions.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\System.Windows.Extensions.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\staticwebassets.build.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\staticwebassets.development.json
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\scopedcss\bundle\MobileServiceProvider.styles.css
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\scopedcss\projectbundle\MobileServiceProvider.bundle.scp.css
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.csproj.CopyComplete
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\MobileServiceProvider.genruntimeconfig.cache
+G:\Other computers\Мій ноутбук\repos\C#\MobileServiceProvider\MobileServiceProvider\obj\Debug\net6.0\ref\MobileServiceProvider.dll
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\InitialData\ordinarConsumers.json
+C:\Users\gnatu\source\repos\C#\MobileServiceProvider\MobileServiceProvider\bin\Debug\net6.0\InitialData\VIPConsumers.json
