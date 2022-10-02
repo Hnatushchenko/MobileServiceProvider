@@ -19,6 +19,7 @@ namespace MobileServiceProvider.Services
         {
             ViewAllModel model = new ViewAllModel()
             {
+                Id = consumer.Id,
                 Name = consumer.Name,
                 Surname = consumer.Surname,
                 Patronymic = consumer.Patronymic,

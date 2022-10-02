@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using MobileServiceProvider.Models;
 using MobileServiceProvider.Repository;
 using MobileServiceProvider.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -53,6 +54,32 @@ namespace MobileServiceProvider.Controllers
             await dbContext.SaveChangesAsync();
             await dbContext.DisposeAsync();
             return Content("Loaded");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Remove([FromServices] ApplicationContext dbContext, [FromQuery] Guid id)
+        {
+            BaseConsumer? consumer = await dbContext.OrdinarConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
+            if (consumer is OrdinarConsumer ordinarConsumer)
+            {
+                dbContext.OrdinarConsumers.Remove(ordinarConsumer);
+            }
+            else
+            {
+                consumer = await dbContext.VIPConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
+                if (consumer is VIPConsumer VIPconsumer)
+                {
+                    dbContext.VIPConsumers.Remove(VIPconsumer);
+                }
+                else
+                {
+                    await dbContext.SaveChangesAsync();
+                    await dbContext.DisposeAsync();
+                    return NotFound("Not found");
+                }
+            }
+            await dbContext.SaveChangesAsync();
+            await dbContext.DisposeAsync();
+            return LocalRedirect("~/Consumer/ViewAll");
         }
     }
 }
