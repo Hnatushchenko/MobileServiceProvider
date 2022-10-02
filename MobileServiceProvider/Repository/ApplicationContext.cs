@@ -12,6 +12,7 @@ namespace MobileServiceProvider.Repository
 
         public ApplicationContext()
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -20,19 +21,5 @@ namespace MobileServiceProvider.Repository
             optionsBuilder.UseSqlServer(
                 "Server=(localdb)\\mssqllocaldb;Database=MobileSeviceProviderDatabase;Trusted_Connection=True;");
         }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    if (!initialDataLoaded)
-        //    {
-        //        Tariff[] tariffs = _initialDataProvider.GetTariffs();
-        //        OrdinarConsumer[] ordinarConsumers = _initialDataProvider.GetOrdinarConsumers();
-        //        VIPConsumer[] VIPConsumers = _initialDataProvider.GetVIPConsumers();
-
-        //        modelBuilder.Entity<Tariff>().HasData(tariffs);
-        //        modelBuilder.Entity<OrdinarConsumer>().HasData(ordinarConsumers);
-        //        modelBuilder.Entity<VIPConsumer>().HasData(VIPConsumers);
-        //        initialDataLoaded = true;
-        //    }
-        //}
     }
 }

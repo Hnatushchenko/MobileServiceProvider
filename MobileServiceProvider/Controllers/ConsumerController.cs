@@ -47,7 +47,6 @@ namespace MobileServiceProvider.Controllers
             OrdinarConsumer[] ordinarConsumers = dataProvider.GetOrdinarConsumers();
             VIPConsumer[] VIPConsumers = dataProvider.GetVIPConsumers();
 
-            await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Tariffs.AddRangeAsync(tariffs);
             await dbContext.OrdinarConsumers.AddRangeAsync(ordinarConsumers);
             await dbContext.VIPConsumers.AddRangeAsync(VIPConsumers);

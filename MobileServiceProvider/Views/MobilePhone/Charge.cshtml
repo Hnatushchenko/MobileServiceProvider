@@ -34,7 +34,9 @@
 				padding: 3px;
 				padding-bottom: 5px;
 			}
-
+			#sumInput {
+				width: 150px;
+			}
 			input {
 				border-style: none;
 				height: 100%;
@@ -81,7 +83,7 @@
 				const phoneNumberInput = document.getElementById("phoneNumberInput");
 				const sumInput = document.getElementById("sumInput");
 
-				if (phoneNumberInput.value.match(/\+380[0-9]{9}/) && sumInput.value.match(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)) {
+				if (phoneNumberInput.value.match(/\+380[0-9]{9}/) && sumInput.value.match(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/) && sumInput.value < 10000 && sumInput.value > 0) {
 					document.getElementById("TopUpButton").disabled = false;
 				}
 				else {
@@ -100,7 +102,7 @@
 						<input id="phoneNumberInput" type="text" oninput="InputHandler()" name="phoneNumber" placeholder="Номер телефону" pattern="\+380[0-9]{9}" maxlength="13" required>
 					</div>
 					<div class="sum inputField">
-						<input id="sumInput" type="number" min="1" name="sum" placeholder="Сума" oninput="InputHandler()">
+						<input id="sumInput" type="number" maxlength="7" name="sum" placeholder="Сума" oninput="InputHandler()" onKeyPress="if(this.value.length==7) return false;" required>
 					</div>
 				</div>
 				<div>

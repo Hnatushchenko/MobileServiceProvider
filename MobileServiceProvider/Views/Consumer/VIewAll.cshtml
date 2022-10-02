@@ -36,9 +36,6 @@
 		function sort() {
 			var column = document.getElementById("selectedColumn").value;
 			var order = document.getElementById("selectedOrder").value;
-			console.log(column);
-			console.log(order);
-			console.log(window.location.href);
 			location.href = window.location.href.split('?')[0] + '?orderby=' + column + '&order=' + order;
 		}
 	</script>
