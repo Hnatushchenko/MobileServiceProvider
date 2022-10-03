@@ -22,21 +22,33 @@ namespace MobileServiceProvider.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewAll([FromServices] ApplicationContext dbContext)
+        public async Task<IActionResult> ViewAll([FromServices] ApplicationContext dbContext)
         {
             List<BaseConsumer> consumers = new List<BaseConsumer>();
-            dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
-            dbContext.VIPConsumers.ToList().ForEach(consumers.Add);
+            await dbContext.OrdinarConsumers.ForEachAsync(consumers.Add);
+            await dbContext.VIPConsumers.ForEachAsync(consumers.Add);
 
             List<ViewAllModel> models = new List<ViewAllModel>(consumers.Count());
 
+            string? date = Request.Query["date"];
+            date ??= DateTime.Today.ToString("yyyy-MM-dd");
+            ViewData["date"] = date;
+
+            string? orderBy = Request.Query["orderby"];
+            orderBy ??= "id";
+            ViewData["orderby"] = orderBy;
+
+            string? order = Request.Query["order"];
+            order ??= "ascending";
+            ViewData["order"] = order;
+
             foreach (var consumer in consumers)
             {
-                ViewAllModel model = _converter.Convert(consumer);
+                ViewAllModel model = _converter.Convert(consumer, date);
                 models.Add(model);
             }
 
-            var sortedModels = _sorter.Sort(models, Request.Query["orderby"], Request.Query["order"]);
+            var sortedModels = _sorter.Sort(models, orderBy, order);
             dbContext.Dispose();
             return View(sortedModels);
         }
@@ -44,11 +56,11 @@ namespace MobileServiceProvider.Controllers
         [HttpGet]
         public async Task<IActionResult> Load([FromServices] ApplicationContext dbContext, [FromServices] IInitialDataProvider dataProvider)
         {
-            Tariff[] tariffs = dataProvider.GetTariffs();
+            //Tariff[] tariffs = dataProvider.GetTariffs();
             OrdinarConsumer[] ordinarConsumers = dataProvider.GetOrdinarConsumers();
             VIPConsumer[] VIPConsumers = dataProvider.GetVIPConsumers();
 
-            await dbContext.Tariffs.AddRangeAsync(tariffs);
+            //await dbContext.Tariffs.AddRangeAsync(tariffs);
             await dbContext.OrdinarConsumers.AddRangeAsync(ordinarConsumers);
             await dbContext.VIPConsumers.AddRangeAsync(VIPConsumers);
             await dbContext.SaveChangesAsync();

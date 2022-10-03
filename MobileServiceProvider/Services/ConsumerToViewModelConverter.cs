@@ -1,22 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MobileServiceProvider.Models;
 using MobileServiceProvider.Repository;
+using System.Globalization;
 
 namespace MobileServiceProvider.Services
 {
     public class ConsumerToViewModelConverter : IConsumerToViewModelConverter
     {
-        private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ApplicationContext dbContext;
 
         public ConsumerToViewModelConverter(ApplicationContext context, IDateTimeProvider dateTimeProvider)
         {
             dbContext = context;
-            _dateTimeProvider = dateTimeProvider;
         }
 
-        public ViewAllModel Convert(BaseConsumer consumer)
+        public ViewAllModel Convert(BaseConsumer consumer, string dateAsString)
         {
+            DateTime date = DateTime.ParseExact(dateAsString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
             ViewAllModel model = new ViewAllModel()
             {
                 Id = consumer.Id,
@@ -41,8 +42,12 @@ namespace MobileServiceProvider.Services
                 model.MonthlyFee = Math.Round(model.MonthlyFee, 2);
             }
 
-            int HowManyMonthsIsActive = (_dateTimeProvider.Now.Year - consumer.RegistrationDate.Year) * 12 + _dateTimeProvider.Now.Month - consumer.RegistrationDate.Month;
+            int HowManyMonthsIsActive = (date.Year - consumer.RegistrationDate.Year) * 12 + date.Month - consumer.RegistrationDate.Month;
             model.Balance = Math.Round(consumer.TotalMoney - HowManyMonthsIsActive * model.MonthlyFee, 2);
+            if (model.Balance > consumer.TotalMoney)
+            {
+                model.Balance = consumer.TotalMoney;
+            }
 
             model.Status = model.Balance < 0 ? "Відключено" : "Підключено";
             return model;

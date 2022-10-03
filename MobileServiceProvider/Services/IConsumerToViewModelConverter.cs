@@ -4,6 +4,6 @@ namespace MobileServiceProvider.Services
 {
 	public interface IConsumerToViewModelConverter
 	{
-		ViewAllModel Convert(BaseConsumer consumer);
+		ViewAllModel Convert(BaseConsumer consumer, string dateAsString);
 	}
 }

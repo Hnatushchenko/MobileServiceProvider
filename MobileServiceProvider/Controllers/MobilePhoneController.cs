@@ -36,7 +36,7 @@ namespace MobileServiceProvider.Controllers
             }
             if (consumer == null)
             {
-                return View(new ChargeResultViewModel { Success = false, Details = $"Клієнта з мобільним номером \"{phoneNumber}\" не знайдено." });
+                return View(new ChargeResultViewModel { Success = false, Details = $"Клієнта з мобільним номером {phoneNumber} не знайдено." });
             }
             consumer.TotalMoney += sum;
             dbContext.SaveChanges();

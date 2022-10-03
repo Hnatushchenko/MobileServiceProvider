@@ -61,41 +61,64 @@
 			background-color: inherit;
 			border: none;
 		}
+		.date-header {
+			margin-bottom: 50px;
+			display: flex;
+		}
+		.date {
+			
+			margin-left: auto; 
+			margin-right: 0;
+		}
 	</style>
 		
 	<script>
-		const button = document.getElementById("ToSortButton");
-		function sort() {
-			var column = document.getElementById("selectedColumn").value;
-			var order = document.getElementById("selectedOrder").value;
-			location.href = window.location.href.split('?')[0] + '?orderby=' + column + '&order=' + order;
+		window.onload = function () {
+			const selectColumnList = document.getElementById("selectedColumn");
+            selectColumnList.value = '@ViewData["orderby"]';
+
+			const selectOrderList = document.getElementById("selectedOrder");
+            selectOrderList.value = '@ViewData["order"]';
 		}
+
 		
 		function removeClient(id) {
-            console.log(id);
 			location.href = window.location.origin + "/Consumer/Remove?id=" + id;
+		}
+		function inputChangedHandler() {
+			const column = document.getElementById("selectedColumn").value;
+			const order = document.getElementById("selectedOrder").value;
+			const date = document.getElementById("currentDateInput").value;
+			location.href = window.location.origin + '?orderby=' + column + '&order=' + order + '&date=' + date;
 		}
 	</script>
 </head>
 <body>
-	<div>
-		Впорядкувати за:
-		<select id="selectedColumn">
-			<option value="name" selected>Ім'я</option>
-			<option value="surname">Прізвище</option>
-			<option value="patronymic">По батькові</option>
-			<option value="address">Адреса</option>
-			<option value="phoneNumber">Номер телефону</option>
-			<option value="monthlyFee">Абонентська плата</option>
-			<option value="balance">Баланс</option>
-		</select>
-		Порядок сортування:
-		<select id="selectedOrder">
-			<option value="ascending" selected>Зростанням</option>
-			<option value="descending">Спаданням</option>
-		</select>
-		<button id="ToSortButton" onclick="sort()">Посортувати</button>
+	<div class="date-header" align="right">
+		<div class="date">
+			Поточна дата: 
+			<input type="date" name="currentDate" id="currentDateInput" onchange="inputChangedHandler()" value='@ViewData["date"]'>
+		</div>
 	</div>
+	<div>
+		<div>
+			Впорядкувати за:
+			<select id="selectedColumn" onchange="inputChangedHandler()">
+				<option hidden disabled selected value="id">Виберіть стовбець</option>
+				<option value="name">Ім'я</option>
+				<option value="surname">Прізвище</option>
+				<option value="patronymic">По батькові</option>
+				<option value="address">Адреса</option>
+				<option value="phoneNumber">Номер телефону</option>
+				<option value="monthlyFee">Абонентська плата</option>
+				<option value="balance">Баланс</option>
+			</select>
+			Порядок сортування:
+			<select id="selectedOrder" onchange="inputChangedHandler()">
+				<option value="ascending" selected>Зростанням</option>
+				<option value="descending">Спаданням</option>
+			</select>
+		</div>
 	<table id="Table">
 		<thead>
 			<tr>
@@ -150,6 +173,7 @@
 			}
 		</tbody>
 	</table>
+	</div>
 </body>
 </html>
 

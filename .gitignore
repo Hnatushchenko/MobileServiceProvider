@@ -1,4 +1,4 @@
 .vs/
 .vscode/
-MobileServiceProvider/bin/*
-MobileServiceProvider/obj/*
+MobileServiceProvider/bin/
+MobileServiceProvider/obj/

@@ -4,12 +4,13 @@ namespace MobileServiceProvider.Services
 {
     public class ViewAllModelSorter : IViewAllModelSorter
     {
-        public IEnumerable<ViewAllModel> Sort(List<ViewAllModel> models, string? propertyName, string? order)
+        public IEnumerable<ViewAllModel> Sort(List<ViewAllModel> models, string propertyName, string order)
         {
-            if (propertyName is null || order is null)
-            {
-                return models;
-            }
+            //if (propertyName is null || order is null)
+            //{
+            //    propertyName = "id";
+            //    order = "ascending";
+            //}
 
             if (propertyName == "phoneNumber")
             {
@@ -34,6 +35,7 @@ namespace MobileServiceProvider.Services
                 case "ascending":
                     return propertyName switch
                     {
+                        "id" => models.OrderBy(model => model.Id),
                         "name" => models.OrderBy(model => model.Name),
                         "surname" => models.OrderBy(model => model.Surname),
                         "patronymic" => models.OrderBy(model => model.Patronymic),
@@ -46,6 +48,7 @@ namespace MobileServiceProvider.Services
                 case "descending":
                     return propertyName switch
                     {
+                        "id" => models.OrderByDescending(model => model.Id),
                         "name" => models.OrderByDescending(model => model.Name),
                         "surname" => models.OrderByDescending(model => model.Surname),
                         "patronymic" => models.OrderByDescending(model => model.Patronymic),
