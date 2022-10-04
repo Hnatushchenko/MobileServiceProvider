@@ -25,8 +25,12 @@ namespace MobileServiceProvider.Controllers
             }
             catch (FormatException)
             {
-                string message = $"Неможливо перетворити \"{sumAsString}\" у число.";
-                return View(new ChargeResultViewModel { Success = false, Details = message });
+                return View(new ResultViewModel
+                { 
+                    Success = false, 
+                    Title = "Помилка поповнення",
+                    Details = $"Неможливо перетворити \"{sumAsString}\" у число."
+                });
             }
 
             BaseConsumer? consumer = dbContext.OrdinarConsumers.SingleOrDefault(consumer => consumer.PhoneNumber == phoneNumber);
@@ -36,12 +40,21 @@ namespace MobileServiceProvider.Controllers
             }
             if (consumer == null)
             {
-                return View(new ChargeResultViewModel { Success = false, Details = $"Клієнта з мобільним номером {phoneNumber} не знайдено." });
+                return View(new ResultViewModel
+                {
+                    Success = false,
+                    Title = "Помилка поповнення",
+                    Details = $"Абонента з мобільним номером {phoneNumber} не знайдено." });
             }
             consumer.TotalMoney += sum;
             dbContext.SaveChanges();
 
-            return View(new ChargeResultViewModel { Success = true, Details = $"Мобільний номер {phoneNumber} було поповнено на {sum}." });
+            return View(new ResultViewModel 
+            { 
+                Success = true, 
+                Title = "Поповнення пройшло успішно", 
+                Details = $"Мобільний номер {phoneNumber} було поповнено на {sum}."
+            });
         }
     }
 }

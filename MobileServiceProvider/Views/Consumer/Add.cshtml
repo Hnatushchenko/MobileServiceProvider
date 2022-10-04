@@ -1,0 +1,154 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    @model AddConsumerViewModel;
+}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new client</title>
+    <style>
+        body {
+            background-color: white;
+        }
+        .content {
+            width: 500px;
+            background-color: #FBFBFB;
+            padding-top: 15px;
+            padding-bottom: 20px;
+            border-radius: 6px;
+        }
+        label {
+            color: #5F6B7E;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            padding-left: 5px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 10px;
+            margin-top: 5px;
+            border-style: solid;
+            border-color: #E5E5E5;
+            height: 30px;
+            border-radius: 6px;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            padding-top: 5px;
+        }
+        #submit-button {
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: white;
+            text-align: left;
+            padding-left: 5px;
+            padding-right: 5px;
+            height: 30px;
+            border-radius: 6px;
+            border: none;
+            background-color: #04AA6D;
+        }
+        #submit-button:hover {
+            background-color: #059862;
+        }
+        select {
+            margin-bottom: 30px;
+        }
+        .title {
+            display: flex;
+            justify-content: center;
+        }
+        form {
+            padding-left: 20px;
+            padding-right: 60px;
+        }
+        h1 {
+            font-size: 30px;
+        }
+        #phone-number-format-hint {
+            color: red;
+        }
+    </style>
+    <script>
+        function HandleTypeChange() {
+            if (document.querySelector('input[name="type"]:checked').value === "ordinar") {
+                document.getElementById("phone-number-format-hint").hidden = true;
+            }
+            else
+            {
+                document.getElementById("phone-number-format-hint").hidden = false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <main>
+        <div class="content">
+            <div class="title">
+                <h1>
+                    Додати нового абонента
+                </h1>
+            </div>
+            <form action="#" method="post" autocomplete="off">
+                <label>Тип абонента:</label>
+                <div style="margin-bottom: 10px;">
+                    <div>
+                        <input type="radio" name="type" id="ordinar" value="ordinar" onchange="HandleTypeChange()" required checked>
+                        <label for="ordinar">Звичайний</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="type" id="VIP" value="VIP" onchange="HandleTypeChange()" required>
+                        <label for="VIP">Юридична особа</label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="name">Ім'я</label>
+                    <input id="name" type="text" name="name" required>
+                </div>
+                <div>
+                    <label for="surname">Прізвище</label>
+                    <input id="surname" type="text" name="surname" required>
+                </div>
+                <div>
+                    <label for="patronymic">По батькові</label>
+                    <input type="text" name="patronymic" id="patronymic" required>
+                </div>
+                <div>
+                    <label for="address">Адреса</label>
+                    <input type="text" name="address" id="address" required>
+                </div>
+                <div>
+                    <label for="phoneNumber">Номер телефону</label>
+                    <input type="text" name="phoneNumber" id="phoneNumber" required>
+                    <label id="phone-number-format-hint" for="phoneNumber" hidden>Для введення декількох номерів, використовуйте кому.</label>
+                </div>
+                <div>
+                    <label for="tariff">Тариф:</label>
+                    <div>
+                        @for (int i = 0; i < @Model.TariffNames.Count(); i++)
+                        {
+                            <div>
+                                <input type="radio" name="tariff" id="tarrif-@i" value="@Model.TariffNames[i]" required>
+                                <label for="tarrif-@i">@Model.TariffNames[i]</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <button id="submit-button" type="submit">
+                    <span style="margin: 4px 10px;">Додати абонента</span>
+                </button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

@@ -6,6 +6,7 @@ using MobileServiceProvider.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Runtime.CompilerServices;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace MobileServiceProvider.Controllers
@@ -56,11 +57,9 @@ namespace MobileServiceProvider.Controllers
         [HttpGet]
         public async Task<IActionResult> Load([FromServices] ApplicationContext dbContext, [FromServices] IInitialDataProvider dataProvider)
         {
-            //Tariff[] tariffs = dataProvider.GetTariffs();
             OrdinarConsumer[] ordinarConsumers = dataProvider.GetOrdinarConsumers();
             VIPConsumer[] VIPConsumers = dataProvider.GetVIPConsumers();
 
-            //await dbContext.Tariffs.AddRangeAsync(tariffs);
             await dbContext.OrdinarConsumers.AddRangeAsync(ordinarConsumers);
             await dbContext.VIPConsumers.AddRangeAsync(VIPConsumers);
             await dbContext.SaveChangesAsync();
@@ -92,6 +91,81 @@ namespace MobileServiceProvider.Controllers
             await dbContext.SaveChangesAsync();
             await dbContext.DisposeAsync();
             return LocalRedirect("~/Consumer/ViewAll");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Add([FromServices] ApplicationContext dbContext)
+        {
+            AddConsumerViewModel model = new AddConsumerViewModel();
+            model.TariffNames = dbContext.Tariffs.Select(t => t.Name).ToList() ?? new List<string?>();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add([FromServices] ApplicationContext dbContext, [FromServices] IConsumerValidator validator, [FromForm] string name)
+        {
+            var form = Request.Form;
+            BaseConsumer consumer;
+
+            if (form["type"] == "ordinar")
+            {
+                consumer = new OrdinarConsumer();
+            }
+            else if (form["type"] == "VIP")
+            {
+                consumer = new VIPConsumer();
+            }
+            else
+            {
+                throw new ArgumentException($"Unknown type of consumer: {form["type"]}");
+            }
+
+            consumer.Id = Guid.NewGuid();
+            consumer.Name = name;
+            consumer.Surname = form["surname"];
+            consumer.Patronymic = form["patronymic"];
+            consumer.Address = form["address"];
+            consumer.TariffName = form["tariff"];
+            consumer.RegistrationDate = DateTime.Now;
+
+            {
+                if (consumer is OrdinarConsumer ordinarConsumer)
+                {
+                    ordinarConsumer!.PhoneNumber = form["phoneNumber"];
+                }
+                else if (consumer is VIPConsumer VIPconsumer)
+                {
+                    VIPconsumer!.PhoneNumbers = form["phoneNumber"];
+                }
+            }
+
+            ValidationResult? validationrResult = validator.Validate(consumer);
+
+            if (validationrResult == ValidationResult.Success)
+            {
+                if (consumer is OrdinarConsumer ordinarConsumer)
+                {
+                    await dbContext.OrdinarConsumers.AddAsync(ordinarConsumer);
+                }
+                else if (consumer is VIPConsumer VIPconsumer)
+                {
+                    await dbContext.VIPConsumers.AddAsync(VIPconsumer);
+                }
+                await dbContext.SaveChangesAsync();
+                return View(viewName: "Result", new ResultViewModel
+                {
+                    Success = true,
+                    Title = "Абонент успішно доданий",
+                    Details = $"Абонент {form["surname"]} {name} {form["patronymic"]} успішно доданий"
+                });
+            }
+            else
+            {
+                return View(viewName: "Result", new ResultViewModel
+                {
+                    Success = false,
+                    Title = "Помилка при додаванні абонента",
+                    Details = validationrResult!.ErrorMessage ?? ""
+                });
+            }
         }
     }
 }

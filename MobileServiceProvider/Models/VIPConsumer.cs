@@ -4,6 +4,6 @@ namespace MobileServiceProvider.Models
 {
     public class VIPConsumer : BaseConsumer
     {
-        public string? PhoneNumbers { get; set; }
+        public string PhoneNumbers { get; set; } = "";
     }
 }

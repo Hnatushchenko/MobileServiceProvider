@@ -12,6 +12,7 @@ namespace MobileServiceProvider
 
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddTransient<IConsumerValidator, ConsumerValidator>();
             builder.Services.AddTransient<IConsumerToViewModelConverter, ConsumerToViewModelConverter>();
             builder.Services.AddSingleton<IViewAllModelSorter, ViewAllModelSorter>();
             builder.Services.AddSingleton<IDateTimeProvider, RealDateTimeProvider>();
