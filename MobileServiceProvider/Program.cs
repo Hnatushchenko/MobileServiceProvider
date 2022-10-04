@@ -12,6 +12,8 @@ namespace MobileServiceProvider
 
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddTransient<IRandomDateGenerator, RandomDateGenerator>();
+            builder.Services.AddTransient<IRandomPhoneNumberGenerator, RandomPhoneNumberGenerator>();
             builder.Services.AddTransient<IConsumerValidator, ConsumerValidator>();
             builder.Services.AddTransient<IConsumerToViewModelConverter, ConsumerToViewModelConverter>();
             builder.Services.AddSingleton<IViewAllModelSorter, ViewAllModelSorter>();

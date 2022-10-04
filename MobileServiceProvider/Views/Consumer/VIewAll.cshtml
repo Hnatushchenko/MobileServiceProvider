@@ -29,9 +29,8 @@
 		tr:nth-child(even) {
 			background-color: #dddddd;
 		}
-		.remove-icon-container {
+		.actions-containder {
 			background-color: none;
-			position: relative;
 			cursor: pointer;
 		}
 		.tip {
@@ -50,13 +49,22 @@
 			opacity: 0;
 			background-color: white;
 		}
-		.remove-icon-container:hover .tip {
+		.remove-icon:hover .tip {
+			opacity: 1;
+		}
+		.calls-icon:hover .tip {
 			opacity: 1;
 		}
 		.remove-icon {
-			background-color: none;
+			margin-right: 4px;
+			display: inline-block;
+			position: relative;
 		}
-		.remove-button {
+		.calls-icon {
+			display: inline-block;
+			position: relative;
+		}
+		.action-button {
 			padding: 0px;
 			background-color: inherit;
 			border: none;
@@ -70,6 +78,7 @@
 			margin-left: auto; 
 			margin-right: 0;
 		}
+
 	</style>
 		
 	<script>
@@ -85,6 +94,10 @@
 		function removeClient(id) {
 			location.href = window.location.origin + "/Consumer/Remove?id=" + id;
 		}
+		function ShowCalls(id) {
+			console.log(id);
+		}
+		
 		function inputChangedHandler() {
 			const column = document.getElementById("selectedColumn").value;
 			const order = document.getElementById("selectedOrder").value;
@@ -160,13 +173,21 @@
 					<td class="@consumer.Status">@consumer.Balance</td>
 					<td class="@consumer.Status">@consumer.Status</td>
 					<td class="remove-cell">
-						<div class="remove-icon-container">
+						<div class="actions-containder">
 							<div class="remove-icon">
-								<button class="remove-button" onclick="removeClient('@consumer.Id.ToString()')">❌</button>
+								<button class="action-button" onclick="removeClient('@consumer.Id.ToString()')">❌</button>
+								<div class="tip">
+									Вилучити
+								</div>
 							</div>
-							<div class="tip">
-								Вилучити
+
+							<div class="calls-icon">
+								<button class="action-button" onclick="ShowCalls('@consumer.Id.ToString()')">📞</button>
+								<div class="tip">
+									Журнал викликів
+								</div>
 							</div>
+							
 						</div>
 					</td>
 				</tr>
