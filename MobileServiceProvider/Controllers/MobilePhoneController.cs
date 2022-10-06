@@ -6,13 +6,19 @@ namespace MobileServiceProvider.Controllers
 {
     public class MobilePhoneController : Controller
     {
+        [HttpGet] // MobilePhone/Calls?consumerId=
+        public IActionResult Calls([FromServices] ApplicationContext dbContext, [FromQuery] Guid? consumerId)
+        {
+            List<PhoneCall> phoneCalls = dbContext.PhoneCalls.Where(x => x.ConsumerId == consumerId).ToList();
+            return View(phoneCalls);
+        }
         [HttpGet]
         public IActionResult Charge()
         {
             return View();
         }
 
-        [HttpPost] // MobilePhone/Charge
+        [HttpPost] 
         public IActionResult ChargeResult([FromServices] ApplicationContext dbContext)
         {
             string phoneNumber = Request.Form["phoneNumber"];

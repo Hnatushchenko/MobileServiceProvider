@@ -12,13 +12,14 @@ namespace MobileServiceProvider
 
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddTransient<IRandomPhoneCallsGenerator, RandomPhoneCallsGenerator>();
             builder.Services.AddTransient<IRandomDateGenerator, RandomDateGenerator>();
             builder.Services.AddTransient<IRandomPhoneNumberGenerator, RandomPhoneNumberGenerator>();
             builder.Services.AddTransient<IConsumerValidator, ConsumerValidator>();
             builder.Services.AddTransient<IConsumerToViewModelConverter, ConsumerToViewModelConverter>();
             builder.Services.AddSingleton<IViewAllModelSorter, ViewAllModelSorter>();
             builder.Services.AddSingleton<IDateTimeProvider, RealDateTimeProvider>();
-            builder.Services.AddSingleton<IInitialDataProvider, InitialDataProvider>();
+            builder.Services.AddTransient<IInitialDataProvider, InitialDataProvider>();
             builder.Services.AddTransient<ApplicationContext>();
 
             var app = builder.Build();

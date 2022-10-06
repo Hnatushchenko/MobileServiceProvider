@@ -26,8 +26,8 @@ namespace MobileServiceProvider.Controllers
         public async Task<IActionResult> ViewAll([FromServices] ApplicationContext dbContext)
         {
             List<BaseConsumer> consumers = new List<BaseConsumer>();
-            await dbContext.OrdinarConsumers.ForEachAsync(consumers.Add);
-            await dbContext.VIPConsumers.ForEachAsync(consumers.Add);
+            dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
+            dbContext.VIPConsumers.ToList().ForEach(consumers.Add);
 
             List<ViewAllModel> models = new List<ViewAllModel>(consumers.Count());
 
@@ -57,9 +57,11 @@ namespace MobileServiceProvider.Controllers
         [HttpGet]
         public async Task<IActionResult> Load([FromServices] ApplicationContext dbContext, [FromServices] IInitialDataProvider dataProvider)
         {
+            Tariff[] tariffs = dataProvider.GetTariffs();
             OrdinarConsumer[] ordinarConsumers = dataProvider.GetOrdinarConsumers();
             VIPConsumer[] VIPConsumers = dataProvider.GetVIPConsumers();
 
+            await dbContext.Tariffs.AddRangeAsync(tariffs);
             await dbContext.OrdinarConsumers.AddRangeAsync(ordinarConsumers);
             await dbContext.VIPConsumers.AddRangeAsync(VIPConsumers);
             await dbContext.SaveChangesAsync();
@@ -100,7 +102,7 @@ namespace MobileServiceProvider.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Add([FromServices] ApplicationContext dbContext, [FromServices] IConsumerValidator validator, [FromForm] string name)
+        public async Task<IActionResult> Add([FromServices] ApplicationContext dbContext, [FromServices] IConsumerValidator validator, [FromServices] IRandomPhoneCallsGenerator randomPhoneCallsGenerator, [FromForm] string name)
         {
             var form = Request.Form;
             BaseConsumer consumer;
@@ -127,15 +129,18 @@ namespace MobileServiceProvider.Controllers
             consumer.RegistrationDate = DateTime.Now;
 
             {
-                if (consumer is OrdinarConsumer ordinarConsumer)
-                {
-                    ordinarConsumer!.PhoneNumber = form["phoneNumber"];
-                }
-                else if (consumer is VIPConsumer VIPconsumer)
-                {
-                    VIPconsumer!.PhoneNumbers = form["phoneNumber"];
-                }
+            if (consumer is OrdinarConsumer ordinarConsumer)
+            {
+                ordinarConsumer!.PhoneNumber = form["phoneNumber"];
+                
             }
+            else if (consumer is VIPConsumer VIPconsumer)
+            {
+                VIPconsumer!.PhoneNumbers = form["phoneNumber"];
+                
+            }
+            }
+
 
             ValidationResult? validationrResult = validator.Validate(consumer);
 
@@ -150,6 +155,16 @@ namespace MobileServiceProvider.Controllers
                     await dbContext.VIPConsumers.AddAsync(VIPconsumer);
                 }
                 await dbContext.SaveChangesAsync();
+
+                if (consumer is OrdinarConsumer ordinarConsumer1)
+                {
+                    await randomPhoneCallsGenerator.GenerateFor(ordinarConsumer1, DateTimeOffset.Now);
+                }
+                else if (consumer is VIPConsumer VIPconsumer)
+                {
+                    await randomPhoneCallsGenerator.GenerateFor(VIPconsumer, DateTimeOffset.Now);
+                }
+
                 return View(viewName: "Result", new ResultViewModel
                 {
                     Success = true,

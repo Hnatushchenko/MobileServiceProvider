@@ -53,12 +53,12 @@ public class ConsumerValidator : IConsumerValidator
             }
             if (!Regex.IsMatch(ordinarConsumer.PhoneNumber, @"^\+380[0-9]{9}$"))
             {
-                return new ValidationResult("Мобільний номер не відповідає формату +380XXXXXXXXX");
+                return new ValidationResult($"Мобільний номер {ordinarConsumer.PhoneNumber} не відповідає формату +380XXXXXXXXX");
             }
         }
         else if (consumerToValidate is VIPConsumer VIPconsumer)
         {
-            foreach (string phoneNumber in VIPconsumer.PhoneNumbers.Split(", "))
+            foreach (string phoneNumber in VIPconsumer.PhoneNumbers.Split(","))
             {
                 foreach (var consumer in _dbContext.OrdinarConsumers)
                 {
@@ -76,7 +76,7 @@ public class ConsumerValidator : IConsumerValidator
                 }
                 if (!Regex.IsMatch(phoneNumber, @"^\+380[0-9]{9}$"))
                 {
-                    return new ValidationResult("Мобільний номер не відповідає формату +380XXXXXXXXX");
+                    return new ValidationResult($"Мобільний номер {phoneNumber} не відповідає формату +380XXXXXXXXX");
                 }
             }
         }

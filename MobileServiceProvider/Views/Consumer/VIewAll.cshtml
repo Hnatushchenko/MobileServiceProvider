@@ -82,20 +82,20 @@
 	</style>
 		
 	<script>
-		window.onload = function () {
+		 window.onload = function () {
 			const selectColumnList = document.getElementById("selectedColumn");
             selectColumnList.value = '@ViewData["orderby"]';
 
 			const selectOrderList = document.getElementById("selectedOrder");
             selectOrderList.value = '@ViewData["order"]';
-		}
+		} 
 
 		
 		function removeClient(id) {
 			location.href = window.location.origin + "/Consumer/Remove?id=" + id;
 		}
 		function ShowCalls(id) {
-			console.log(id);
+			location.href = window.location.origin + "/MobilePhone/Calls?consumerId=" + id;
 		}
 		
 		function inputChangedHandler() {
@@ -116,8 +116,8 @@
 	<div>
 		<div>
 			Впорядкувати за:
-			<select id="selectedColumn" onchange="inputChangedHandler()">
-				<option hidden disabled selected value="id">Виберіть стовбець</option>
+			<select id="selectedColumn" onchange="inputChangedHandler()" value='@ViewData["orderby"]'>
+				<option hidden disabled value="id">Виберіть стовбець</option>
 				<option value="name">Ім'я</option>
 				<option value="surname">Прізвище</option>
 				<option value="patronymic">По батькові</option>
@@ -127,74 +127,73 @@
 				<option value="balance">Баланс</option>
 			</select>
 			Порядок сортування:
-			<select id="selectedOrder" onchange="inputChangedHandler()">
-				<option value="ascending" selected>Зростанням</option>
+			<select id="selectedOrder" onchange="inputChangedHandler()" value='@ViewData["order"]'>
+				<option value="ascending">Зростанням</option>
 				<option value="descending">Спаданням</option>
 			</select>
 		</div>
-	<table id="Table">
-		<thead>
-			<tr>
-				<th>Ім'я</th>
-				<th>Прізвище</th>
-				<th>По батькові</th>
-				<th>Адреса</th>
-				<th>Номер телефону</th>
-				<th>Абонентська плата</th>
-				<th>Баланс</th>
-				<th>Статус</th>
-				<th>Дії</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var consumer in @Model)
-			{
+		<table id="Table">
+			<thead>
 				<tr>
-					<td>@consumer.Name</td>
-					<td>@consumer.Surname</td>
-					<td>@consumer.Patronymic</td>
-					<td>@consumer.Address</td>
-					@if (consumer.PhoneNumbers!.Count() == 1)
-					{
-						<td>@consumer.PhoneNumbers[0]</td>
-					}
-					else
-					{
-						<td>
-							<ul>
-								@for (int i = 0; i < consumer.PhoneNumbers.Count; i++)
-								{
-									<li>@consumer.PhoneNumbers[i]</li>
-								}
-							</ul>
-						</td>
-					}
-					<td>@consumer.MonthlyFee</td>
-					<td class="@consumer.Status">@consumer.Balance</td>
-					<td class="@consumer.Status">@consumer.Status</td>
-					<td class="remove-cell">
-						<div class="actions-containder">
-							<div class="remove-icon">
-								<button class="action-button" onclick="removeClient('@consumer.Id.ToString()')">❌</button>
-								<div class="tip">
-									Вилучити
-								</div>
-							</div>
-
-							<div class="calls-icon">
-								<button class="action-button" onclick="ShowCalls('@consumer.Id.ToString()')">📞</button>
-								<div class="tip">
-									Журнал викликів
-								</div>
-							</div>
-							
-						</div>
-					</td>
+					<th>Ім'я</th>
+					<th>Прізвище</th>
+					<th>По батькові</th>
+					<th>Адреса</th>
+					<th>Номер телефону</th>
+					<th>Абонентська плата</th>
+					<th>Баланс</th>
+					<th>Статус</th>
+					<th>Дії</th>
 				</tr>
-			}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach (var consumer in @Model)
+				{
+					<tr>
+						<td>@consumer.Name</td>
+						<td>@consumer.Surname</td>
+						<td>@consumer.Patronymic</td>
+						<td>@consumer.Address</td>
+						@if (consumer.PhoneNumbers!.Count() == 1)
+						{
+							<td>@consumer.PhoneNumbers[0]</td>
+						}
+						else
+						{
+							<td>
+								<ul>
+									@for (int i = 0; i < consumer.PhoneNumbers.Count; i++)
+									{
+										<li>@consumer.PhoneNumbers[i]</li>
+									}
+								</ul>
+							</td>
+						}
+						<td>@consumer.MonthlyFee</td>
+						<td class="@consumer.Status">@consumer.Balance</td>
+						<td class="@consumer.Status">@consumer.Status</td>
+						<td class="remove-cell">
+							<div class="actions-containder">
+								<div class="remove-icon">
+									<button class="action-button" onclick="removeClient('@consumer.Id.ToString()')">❌</button>
+									<div class="tip">
+										Вилучити
+									</div>
+								</div>
+
+								<div class="calls-icon">
+									<button class="action-button" onclick="ShowCalls('@consumer.Id.ToString()')">📞</button>
+									<div class="tip">
+										Журнал викликів
+									</div>
+								</div>
+								
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>
-

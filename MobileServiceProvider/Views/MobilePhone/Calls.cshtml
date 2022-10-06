@@ -1,0 +1,53 @@
+﻿@{
+    @model IEnumerable<PhoneCall>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Phone calls</title>
+	<style>
+		table {
+			width: 100%;
+		}
+		td, th {
+			border: 1px solid #cccccc;
+			padding: 8px;
+		}
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		
+
+	</style>
+		
+	<script>
+	</script>
+</head>
+<body>
+	<div>
+        <table id="Table">
+            <thead>
+                <tr>
+                    <th>З номера</th>
+                    <th>До номера</th>
+                    <th>Час початку розмови</th>
+                    <th>Час завершення розмови</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var phoneCall in @Model)
+                {
+                    <tr>
+                        <td>@phoneCall.FromNumber</td>
+                        <td>@phoneCall.ToNumber</td>
+                        <td>@phoneCall.StartDate.ToLocalTime()</td>
+                        <td>@phoneCall.EndDate.ToLocalTime()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+	</div>
+</body>
+</html>

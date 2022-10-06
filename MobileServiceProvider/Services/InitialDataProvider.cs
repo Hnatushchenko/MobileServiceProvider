@@ -1,4 +1,5 @@
 ﻿using MobileServiceProvider.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace MobileServiceProvider.Services
@@ -9,11 +10,16 @@ namespace MobileServiceProvider.Services
         public const string PathToOrdinarConsumers = @"InitialData\ordinarConsumers.json";
         public const string PathToVIPConsumers = @"InitialData\VIPConsumers.json";
 
+        private readonly IRandomPhoneCallsGenerator _randomPhoneCallsGenerator;
+        private readonly IConsumerValidator _validator;
         private readonly JsonSerializerOptions options;
-        public InitialDataProvider()
+
+        public InitialDataProvider(IRandomPhoneCallsGenerator randomPhoneCallsGenerator, IConsumerValidator validator)
         {
             options = new JsonSerializerOptions() { WriteIndented = true };
             options.Converters.Add(new CustomDateTimeConverter("dd.MM.yyyy"));
+            _randomPhoneCallsGenerator = randomPhoneCallsGenerator;
+            _validator = validator;
         }
 
         public Tariff[] GetTariffs()
@@ -41,7 +47,16 @@ namespace MobileServiceProvider.Services
             }
             foreach (OrdinarConsumer consumer in ordinarConsumers)
             {
-                consumer.Id = Guid.NewGuid();
+                ValidationResult? result = _validator.Validate(consumer);
+                if (result == ValidationResult.Success)
+                {
+                    consumer.Id = Guid.NewGuid();
+                    _randomPhoneCallsGenerator.GenerateFor(consumer, DateTimeOffset.Now);
+                }
+                else
+                {
+                    throw new ValidationException(result!.ErrorMessage);
+                }
             }
             return ordinarConsumers;
         }
@@ -55,7 +70,16 @@ namespace MobileServiceProvider.Services
             }
             foreach (VIPConsumer consumer in VIPConsumers)
             {
-                consumer.Id = Guid.NewGuid();
+                ValidationResult? result = _validator.Validate(consumer);
+                if (result == ValidationResult.Success)
+                {
+                    consumer.Id = Guid.NewGuid();
+                    _randomPhoneCallsGenerator.GenerateFor(consumer, DateTimeOffset.Now);
+                }
+                else
+                {
+                    throw new ValidationException(result!.ErrorMessage);
+                }
             }
             return VIPConsumers;
         }

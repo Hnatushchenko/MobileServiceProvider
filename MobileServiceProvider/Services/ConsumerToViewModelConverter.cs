@@ -35,7 +35,7 @@ namespace MobileServiceProvider.Services
             }
             else if (consumer is VIPConsumer VIPConsumer)
             {
-                model.PhoneNumbers = VIPConsumer.PhoneNumbers.Split(", ").ToList();
+                model.PhoneNumbers = VIPConsumer.PhoneNumbers.Split(",").ToList();
                 model.MonthlyFee = dbContext.Tariffs.Where(tariff =>
                     tariff.Name == consumer.TariffName).Single().MonthlyFeeForVIPConsumer;
                 model.MonthlyFee -= model.MonthlyFee * 0.1 * (model.PhoneNumbers.Count / 5);

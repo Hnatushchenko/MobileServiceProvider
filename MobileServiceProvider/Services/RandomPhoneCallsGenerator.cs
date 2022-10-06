@@ -3,9 +3,9 @@ using MobileServiceProvider.Repository;
 
 namespace MobileServiceProvider.Services
 {
-    public class RandomPhoneCallsGenerator
+    public class RandomPhoneCallsGenerator : IRandomPhoneCallsGenerator
     {
-        const int maxNumberOfCalls = 7;
+        const int maxNumberOfCallsForEachPhoneNumber = 7;
         private static readonly TimeSpan maxLengthOfCall = TimeSpan.FromHours(1);
 
         private readonly Random _random = new Random();
@@ -13,7 +13,7 @@ namespace MobileServiceProvider.Services
         IRandomPhoneNumberGenerator _randomPhoneNumberGenerator;
         IRandomDateGenerator _randomDateGenerator;
 
-        public RandomPhoneCallsGenerator(ApplicationContext dbContext, 
+        public RandomPhoneCallsGenerator(ApplicationContext dbContext,
             IRandomPhoneNumberGenerator randomPhoneNumberGenerator,
             IRandomDateGenerator randomDateGenerator)
         {
@@ -21,34 +21,58 @@ namespace MobileServiceProvider.Services
             _randomPhoneNumberGenerator = randomPhoneNumberGenerator;
             _randomDateGenerator = randomDateGenerator;
         }
-
-        public async Task GenerateFor(BaseConsumer consumer, DateTimeOffset maxDate)
+        public async Task GenerateFor(VIPConsumer consumer, DateTimeOffset maxDate)
         {
-            int numberOfCalls = _random.Next(maxNumberOfCalls + 1);
-            if (consumer is OrdinarConsumer ordinarConsumer)
+            string[] phoneNumbers = consumer.PhoneNumbers.Split(",");
+            foreach (string phoneNumber in phoneNumbers)
             {
+                int numberOfCalls = _random.Next(maxNumberOfCallsForEachPhoneNumber + 1);
                 for (int i = 0; i < numberOfCalls; i++)
                 {
                     var startDate = _randomDateGenerator.GenerateFrom(consumer.RegistrationDate);
                     DateTimeOffset endDate = startDate.AddSeconds(_random.Next((int)maxLengthOfCall.TotalSeconds));
-                    if (endDate > DateTimeOffset.UtcNow)
+                    if (endDate > maxDate)
                     {
-                        endDate = DateTimeOffset.UtcNow;
+                        endDate = maxDate;
                     }
                     PhoneCall phoneCall = new PhoneCall
                     {
                         Id = Guid.NewGuid(),
-                        FromNumber = ordinarConsumer.PhoneNumber,
+                        FromNumber = phoneNumber,
                         ToNumber = _randomPhoneNumberGenerator.GenerateUkrainianPhoneNumber(),
                         StartDate = startDate,
                         EndDate = endDate,
-                        ConsumerId = consumer.Id,
-                        Consumer = consumer
+                        ConsumerId = consumer.Id
                     };
-                    _dbContext.
-                    ordinarConsumer.PhoneCalls
+                    await _dbContext.PhoneCalls.AddAsync(phoneCall);
                 }
             }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task GenerateFor(OrdinarConsumer consumer, DateTimeOffset maxDate)
+        {
+            int numberOfCalls = _random.Next(3, maxNumberOfCallsForEachPhoneNumber + 1);
+            for (int i = 0; i < numberOfCalls; i++)
+            {
+                var startDate = _randomDateGenerator.GenerateFrom(consumer.RegistrationDate);
+                DateTimeOffset endDate = startDate.AddSeconds(_random.Next((int)maxLengthOfCall.TotalSeconds));
+                if (endDate > maxDate)
+                {
+                    endDate = maxDate;
+                }
+                PhoneCall phoneCall = new PhoneCall
+                {
+                    Id = Guid.NewGuid(),
+                    FromNumber = consumer.PhoneNumber,
+                    ToNumber = _randomPhoneNumberGenerator.GenerateUkrainianPhoneNumber(),
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    ConsumerId = consumer.Id
+                };
+                await _dbContext.PhoneCalls.AddAsync(phoneCall);
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
