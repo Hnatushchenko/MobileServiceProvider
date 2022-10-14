@@ -21,6 +21,7 @@ namespace MobileServiceProvider.Services
             _randomPhoneNumberGenerator = randomPhoneNumberGenerator;
             _randomDateGenerator = randomDateGenerator;
         }
+
         public async Task GenerateFor(VIPConsumer consumer, DateTimeOffset maxDate)
         {
             string[] phoneNumbers = consumer.PhoneNumbers.Split(",");
@@ -35,7 +36,7 @@ namespace MobileServiceProvider.Services
                     {
                         endDate = maxDate;
                     }
-                    PhoneCall phoneCall = new PhoneCall
+                    PhoneCallInfo phoneCall = new PhoneCallInfo
                     {
                         Id = Guid.NewGuid(),
                         FromNumber = phoneNumber,
@@ -52,7 +53,7 @@ namespace MobileServiceProvider.Services
 
         public async Task GenerateFor(OrdinarConsumer consumer, DateTimeOffset maxDate)
         {
-            int numberOfCalls = _random.Next(3, maxNumberOfCallsForEachPhoneNumber + 1);
+            int numberOfCalls = _random.Next(maxNumberOfCallsForEachPhoneNumber + 1);
             for (int i = 0; i < numberOfCalls; i++)
             {
                 var startDate = _randomDateGenerator.GenerateFrom(consumer.RegistrationDate);
@@ -61,7 +62,7 @@ namespace MobileServiceProvider.Services
                 {
                     endDate = maxDate;
                 }
-                PhoneCall phoneCall = new PhoneCall
+                PhoneCallInfo phoneCall = new PhoneCallInfo
                 {
                     Id = Guid.NewGuid(),
                     FromNumber = consumer.PhoneNumber,

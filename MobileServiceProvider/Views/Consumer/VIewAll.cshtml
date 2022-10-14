@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model IEnumerable<ViewAllModel>;
-@{
-}
+﻿@model IEnumerable<ViewAllModel>;
 
 <!DOCTYPE html>
 <html>
@@ -33,6 +28,9 @@
 			background-color: none;
 			cursor: pointer;
 		}
+		.actions-containder a {
+			text-decoration: none;
+		}
 		.tip {
 			padding-top: 4px;
 			padding-bottom: 4px;
@@ -48,6 +46,7 @@
 			pointer-events: none;
 			opacity: 0;
 			background-color: white;
+			z-index: 100;
 		}
 		.remove-icon:hover .tip {
 			opacity: 1;
@@ -64,11 +63,11 @@
 			display: inline-block;
 			position: relative;
 		}
-		.action-button {
+		/*.action-button {
 			padding: 0px;
 			background-color: inherit;
 			border: none;
-		}
+		}*/
 		.date-header {
 			margin-bottom: 50px;
 			display: flex;
@@ -93,9 +92,6 @@
 		
 		function removeClient(id) {
 			location.href = window.location.origin + "/Consumer/Remove?id=" + id;
-		}
-		function ShowCalls(id) {
-			location.href = window.location.origin + "/MobilePhone/Calls?consumerId=" + id;
 		}
 		
 		function inputChangedHandler() {
@@ -175,19 +171,21 @@
 						<td class="remove-cell">
 							<div class="actions-containder">
 								<div class="remove-icon">
-									<button class="action-button" onclick="removeClient('@consumer.Id.ToString()')">❌</button>
+									<a asp-controller="Consumer" asp-action="Remove" asp-route-id="@consumer.Id.ToString()">
+										❌
+									</a>									
 									<div class="tip">
 										Вилучити
 									</div>
 								</div>
-
 								<div class="calls-icon">
-									<button class="action-button" onclick="ShowCalls('@consumer.Id.ToString()')">📞</button>
+									<a asp-controller="PhoneCalls" asp-action="Display" asp-route-consumerId="@consumer.Id.ToString()">
+										📞
+									</a>
 									<div class="tip">
 										Журнал викликів
 									</div>
 								</div>
-								
 							</div>
 						</td>
 					</tr>

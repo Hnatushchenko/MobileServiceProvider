@@ -1,6 +1,6 @@
 ﻿namespace MobileServiceProvider.Models
 {
-    public class PhoneCall
+    public class PhoneCallInfo
     {
         public Guid Id { get; set; }
         public string? FromNumber { get; set; }

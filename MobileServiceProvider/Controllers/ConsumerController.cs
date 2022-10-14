@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using MobileServiceProvider.Models;
+using MobileServiceProvider.Enums;
 using MobileServiceProvider.Repository;
 using MobileServiceProvider.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations;
-
+using System.Globalization;
 
 namespace MobileServiceProvider.Controllers
 {
@@ -28,6 +29,14 @@ namespace MobileServiceProvider.Controllers
             List<BaseConsumer> consumers = new List<BaseConsumer>();
             dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
             dbContext.VIPConsumers.ToList().ForEach(consumers.Add);
+
+            if (consumers.Count() == 0)
+            {
+                return View(viewName: "NoData", new ResultViewModel()
+                {
+                    Title = "Абоненти відсутні"
+                });
+            }
 
             List<ViewAllModel> models = new List<ViewAllModel>(consumers.Count());
 
@@ -50,7 +59,7 @@ namespace MobileServiceProvider.Controllers
             }
 
             var sortedModels = _sorter.Sort(models, orderBy, order);
-            dbContext.Dispose();
+            await dbContext.DisposeAsync();
             return View(sortedModels);
         }
 
@@ -126,7 +135,7 @@ namespace MobileServiceProvider.Controllers
             consumer.Patronymic = form["patronymic"];
             consumer.Address = form["address"];
             consumer.TariffName = form["tariff"];
-            consumer.RegistrationDate = DateTime.Now;
+            consumer.RegistrationDate = DateTime.ParseExact(form["registrationDate"], "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             {
             if (consumer is OrdinarConsumer ordinarConsumer)
@@ -167,7 +176,7 @@ namespace MobileServiceProvider.Controllers
 
                 return View(viewName: "Result", new ResultViewModel
                 {
-                    Success = true,
+                    Type = ResultType.Success,
                     Title = "Абонент успішно доданий",
                     Details = $"Абонент {form["surname"]} {name} {form["patronymic"]} успішно доданий"
                 });
@@ -176,7 +185,7 @@ namespace MobileServiceProvider.Controllers
             {
                 return View(viewName: "Result", new ResultViewModel
                 {
-                    Success = false,
+                    Type = ResultType.Error,
                     Title = "Помилка при додаванні абонента",
                     Details = validationrResult!.ErrorMessage ?? ""
                 });

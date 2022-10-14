@@ -9,7 +9,7 @@ namespace MobileServiceProvider.Repository
         public DbSet<OrdinarConsumer> OrdinarConsumers { get; set; } = null!;
         public DbSet<VIPConsumer> VIPConsumers { get; set; } = null!;
 		public DbSet<Tariff> Tariffs { get; set; } = null!;
-        public DbSet<PhoneCall> PhoneCalls { get; set; } = null!;
+        public DbSet<PhoneCallInfo> PhoneCalls { get; set; } = null!;
 
         public ApplicationContext()
         {

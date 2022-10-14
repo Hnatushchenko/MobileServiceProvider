@@ -1,8 +1,10 @@
-﻿namespace MobileServiceProvider.Models
+﻿using MobileServiceProvider.Enums;
+
+namespace MobileServiceProvider.Models
 {
     public class ResultViewModel
     {
-        public bool Success { get; set; }
+        public ResultType Type { get; set; } = ResultType.Unknown;
         public string Title { get; set; } = "";
         public string Details { get; set; } = "";
     }

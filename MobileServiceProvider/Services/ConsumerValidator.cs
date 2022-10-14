@@ -58,7 +58,13 @@ public class ConsumerValidator : IConsumerValidator
         }
         else if (consumerToValidate is VIPConsumer VIPconsumer)
         {
-            foreach (string phoneNumber in VIPconsumer.PhoneNumbers.Split(","))
+            var phoneNumbers = VIPconsumer.PhoneNumbers.Split(",");
+
+            if (phoneNumbers.Distinct().Count() != phoneNumbers.Length)
+            {
+                return new ValidationResult($"Абонент не може мати декілька однакових номерів");
+            }
+            foreach (string phoneNumber in phoneNumbers)
             {
                 foreach (var consumer in _dbContext.OrdinarConsumers)
                 {

@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MobileServiceProvider.Models;
+using MobileServiceProvider.Enums;
 using MobileServiceProvider.Repository;
 
 namespace MobileServiceProvider.Controllers
 {
     public class MobilePhoneController : Controller
     {
-        [HttpGet] // MobilePhone/Calls?consumerId=
-        public IActionResult Calls([FromServices] ApplicationContext dbContext, [FromQuery] Guid? consumerId)
-        {
-            List<PhoneCall> phoneCalls = dbContext.PhoneCalls.Where(x => x.ConsumerId == consumerId).ToList();
-            return View(phoneCalls);
-        }
         [HttpGet]
         public IActionResult Charge()
         {
@@ -33,7 +28,7 @@ namespace MobileServiceProvider.Controllers
             {
                 return View(new ResultViewModel
                 { 
-                    Success = false, 
+                    Type = ResultType.Error, 
                     Title = "Помилка поповнення",
                     Details = $"Неможливо перетворити \"{sumAsString}\" у число."
                 });
@@ -48,7 +43,7 @@ namespace MobileServiceProvider.Controllers
             {
                 return View(new ResultViewModel
                 {
-                    Success = false,
+                    Type = ResultType.Error,
                     Title = "Помилка поповнення",
                     Details = $"Абонента з мобільним номером {phoneNumber} не знайдено." });
             }
@@ -57,7 +52,7 @@ namespace MobileServiceProvider.Controllers
 
             return View(new ResultViewModel 
             { 
-                Success = true, 
+                Type = ResultType.Success, 
                 Title = "Поповнення пройшло успішно", 
                 Details = $"Мобільний номер {phoneNumber} було поповнено на {sum}."
             });

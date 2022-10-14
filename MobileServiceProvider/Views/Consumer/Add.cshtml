@@ -144,6 +144,10 @@
                         }
                     </div>
                 </div>
+                <div>
+                    <label for="registration-date">Дата реєстрації:</label>
+                    <input type="date" name="registrationDate" id="registration-date" value='@DateTime.Now.ToString("yyyy-MM-dd")' max='@DateTime.Now.ToString("yyyy-MM-dd")'>
+                </div>
                 <button id="submit-button" type="submit">
                     <span style="margin: 4px 10px;">Додати абонента</span>
                 </button>

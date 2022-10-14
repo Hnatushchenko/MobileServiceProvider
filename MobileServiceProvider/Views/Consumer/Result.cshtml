@@ -1,4 +1,5 @@
 ﻿@{
+    @using MobileServiceProvider.Enums;
     @model ResultViewModel;
 }
 
@@ -76,13 +77,13 @@
         <div class="result">
             <div class="icon-wrapper">
                 <div class="icon">
-                    @if (@Model.Success)
+                    @if (@Model.Type == ResultType.Success)
                     {
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg">
+                        <img src="/images/success-icon.png">
                     }
-                    else
+                    else if (@Model.Type == ResultType.Error)
                     {
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Blokkade.png/599px-Blokkade.png">
+                        <img src="/images/error-icon.png">
                     }
                 </div>
             </div>

@@ -1,5 +1,5 @@
 ﻿@{
-    @model IEnumerable<PhoneCall>;
+    @model IEnumerable<PhoneCallInfo>;
 }
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@
 		}
 		tr:nth-child(even) {
 			background-color: #dddddd;
-		
+		}
 
 	</style>
 		
@@ -42,8 +42,8 @@
                     <tr>
                         <td>@phoneCall.FromNumber</td>
                         <td>@phoneCall.ToNumber</td>
-                        <td>@phoneCall.StartDate.ToLocalTime()</td>
-                        <td>@phoneCall.EndDate.ToLocalTime()</td>
+                        <td>@phoneCall.StartDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+                        <td>@phoneCall.EndDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
                     </tr>
                 }
             </tbody>

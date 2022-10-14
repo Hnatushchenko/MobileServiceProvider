@@ -10,6 +10,6 @@
         public string? Address { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string? TariffName { get; set; }
-        public List<PhoneCall>? PhoneCalls { get; set; }
+        public List<PhoneCallInfo>? PhoneCalls { get; set; }
     }
 }
