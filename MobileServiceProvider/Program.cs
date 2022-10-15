@@ -12,6 +12,7 @@ namespace MobileServiceProvider
 
             builder.Services.AddControllersWithViews();
 
+            builder.Services.Add(ServiceDescriptor.Transient(typeof(IConsumersFromFileLoader<>), typeof(ConsumersFromFileLoader<>)));
             builder.Services.AddTransient<IRandomPhoneCallsGenerator, RandomPhoneCallsGenerator>();
             builder.Services.AddTransient<IRandomDateGenerator, RandomDateGenerator>();
             builder.Services.AddTransient<IRandomPhoneNumberGenerator, RandomPhoneNumberGenerator>();
@@ -38,6 +39,11 @@ namespace MobileServiceProvider
             app.UseAuthorization();
 
             app.MapControllerRoute(
+                name: "PhoneCalls",
+                pattern: "PhoneCalls",
+                defaults: new { controller = "PhoneCalls", action = "Display" }
+                );
+            app.MapControllerRoute( 
                 name: "default",
                 pattern: "{controller=Consumer}/{action=ViewAll}");
 

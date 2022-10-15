@@ -22,7 +22,7 @@ namespace MobileServiceProvider.Services
             _randomDateGenerator = randomDateGenerator;
         }
 
-        public async Task GenerateFor(VIPConsumer consumer, DateTimeOffset maxDate)
+        public async Task GenerateForAsync(VIPConsumer consumer, DateTimeOffset maxDate)
         {
             string[] phoneNumbers = consumer.PhoneNumbers.Split(",");
             foreach (string phoneNumber in phoneNumbers)
@@ -51,7 +51,7 @@ namespace MobileServiceProvider.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task GenerateFor(OrdinarConsumer consumer, DateTimeOffset maxDate)
+        public async Task GenerateForAsync(OrdinarConsumer consumer, DateTimeOffset maxDate)
         {
             int numberOfCalls = _random.Next(maxNumberOfCallsForEachPhoneNumber + 1);
             for (int i = 0; i < numberOfCalls; i++)
@@ -74,6 +74,19 @@ namespace MobileServiceProvider.Services
                 await _dbContext.PhoneCalls.AddAsync(phoneCall);
             }
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task GenerateForAsync(BaseConsumer consumer, DateTimeOffset maxDate)
+        {
+            switch (consumer)
+            {
+                case OrdinarConsumer ordinarConsumer:
+                    await GenerateForAsync(ordinarConsumer, maxDate);
+                    break;
+                case VIPConsumer VIPconsumer:
+                    await GenerateForAsync(VIPconsumer, maxDate);
+                    break;
+            }
         }
     }
 }

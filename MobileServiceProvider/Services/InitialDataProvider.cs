@@ -35,7 +35,6 @@ namespace MobileServiceProvider.Services
                 tariff.Id = Guid.NewGuid();
             }
             return tariffs;
-
         }
         public OrdinarConsumer[] GetOrdinarConsumers()
         {
@@ -51,7 +50,7 @@ namespace MobileServiceProvider.Services
                 if (result == ValidationResult.Success)
                 {
                     consumer.Id = Guid.NewGuid();
-                    _randomPhoneCallsGenerator.GenerateFor(consumer, DateTimeOffset.Now);
+                    _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
                 }
                 else
                 {
@@ -74,7 +73,7 @@ namespace MobileServiceProvider.Services
                 if (result == ValidationResult.Success)
                 {
                     consumer.Id = Guid.NewGuid();
-                    _randomPhoneCallsGenerator.GenerateFor(consumer, DateTimeOffset.Now);
+                    _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
                 }
                 else
                 {

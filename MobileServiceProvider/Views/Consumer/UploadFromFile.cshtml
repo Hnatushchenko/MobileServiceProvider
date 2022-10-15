@@ -1,0 +1,32 @@
+﻿<style>
+    .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+    }
+</style>
+
+<div class="body">
+    <div class="content">
+
+        <form method="post" asp-controller="Consumer" asp-action="UploadFromFile" enctype="multipart/form-data">
+            <label>Тип абонента:</label>
+                <div style="margin-bottom: 10px;">
+                    <div style="display: inline-block;">
+                        <input type="radio" name="consumerType" id="OrdinarConsumer" value="OrdinarConsumer" onchange="HandleTypeChange()" required checked>
+                        <label for="OrdinarConsumer">Звичайний</label>
+                    </div>
+                    <div style="display: inline-block;">
+                        <input type="radio" name="consumerType" id="VIPConsumer" value="VIPConsumer" onchange="HandleTypeChange()" required>
+                        <label for="VIPConsumer">Юридична особа</label>
+                    </div>
+                </div>
+            <input type="file" name="Consumers">
+            <button type="submit">Завантажити</button>
+        </form>
+    </div>
+</div>
+

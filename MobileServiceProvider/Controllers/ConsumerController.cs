@@ -9,26 +9,33 @@ using System;
 using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Text.Json;
+using Microsoft.IdentityModel.Tokens;
+using System.Runtime.Serialization;
 
 namespace MobileServiceProvider.Controllers
 {
     public class ConsumerController : Controller
     {
+        private readonly IRandomPhoneCallsGenerator _randomPhoneCallsGenerator;
         private readonly IViewAllModelSorter _sorter;
         private readonly IConsumerToViewModelConverter _converter;
+        private readonly ApplicationContext _dbContext;
 
-        public ConsumerController(IViewAllModelSorter viewAllModelSorter, IConsumerToViewModelConverter converter)
+        public ConsumerController(IViewAllModelSorter viewAllModelSorter, IConsumerToViewModelConverter converter, ApplicationContext dbContext, IRandomPhoneCallsGenerator randomPhoneCallsGenerator)
         {
             _converter = converter;
             _sorter = viewAllModelSorter;
+            _dbContext = dbContext;
+            _randomPhoneCallsGenerator = randomPhoneCallsGenerator;
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewAll([FromServices] ApplicationContext dbContext)
+        public async Task<IActionResult> ViewAll([FromServices] ApplicationContext _dbContext)
         {
             List<BaseConsumer> consumers = new List<BaseConsumer>();
-            dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
-            dbContext.VIPConsumers.ToList().ForEach(consumers.Add);
+            _dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
+            _dbContext.VIPConsumers.ToList().ForEach(consumers.Add);
 
             if (consumers.Count() == 0)
             {
@@ -59,59 +66,103 @@ namespace MobileServiceProvider.Controllers
             }
 
             var sortedModels = _sorter.Sort(models, orderBy, order);
-            await dbContext.DisposeAsync();
             return View(sortedModels);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Load([FromServices] ApplicationContext dbContext, [FromServices] IInitialDataProvider dataProvider)
+        public IActionResult UploadFromFile()
         {
-            Tariff[] tariffs = dataProvider.GetTariffs();
-            OrdinarConsumer[] ordinarConsumers = dataProvider.GetOrdinarConsumers();
-            VIPConsumer[] VIPConsumers = dataProvider.GetVIPConsumers();
-
-            await dbContext.Tariffs.AddRangeAsync(tariffs);
-            await dbContext.OrdinarConsumers.AddRangeAsync(ordinarConsumers);
-            await dbContext.VIPConsumers.AddRangeAsync(VIPConsumers);
-            await dbContext.SaveChangesAsync();
-            await dbContext.DisposeAsync();
-            return Content("Loaded");
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadFromFile([FromForm] IFormFileCollection Consumers, [FromForm] ConsumerType consumerType)
+        {
+            try
+            {
+                IFormFile file = Consumers.Single();
+                if (consumerType == ConsumerType.OrdinarConsumer)
+                {
+                    IConsumersFromFileLoader<OrdinarConsumer> loader = HttpContext.RequestServices.GetRequiredService<IConsumersFromFileLoader<OrdinarConsumer>>();
+                    OrdinarConsumer[] consumers = await loader.LoadAsync(file);
+                    await _dbContext.OrdinarConsumers.AddRangeAsync(consumers);
+                    await _dbContext.SaveChangesAsync();
+                    foreach (var consumer in consumers)
+                    {
+                        await _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
+                    }
+                }
+                else if (consumerType == ConsumerType.VIPConsumer)
+                {
+                    IConsumersFromFileLoader<VIPConsumer> loader = HttpContext.RequestServices.GetRequiredService<IConsumersFromFileLoader<VIPConsumer>>();
+                    VIPConsumer[] consumers = await loader.LoadAsync(file);
+                    await _dbContext.VIPConsumers.AddRangeAsync(consumers);
+                    await _dbContext.SaveChangesAsync();
+                    foreach (var consumer in consumers)
+                    {
+                        await _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
+                    }
+                }
+                ResultViewModel resultViewModel = new ResultViewModel
+                {
+                    Title = "Абоненти успішно додані",
+                    Type = ResultType.Success,
+                };
+                return View("Result", resultViewModel);
+            }
+            catch (JsonException)
+            {
+                ResultViewModel resultViewModel = new ResultViewModel
+                {
+                    Title = "Помилка завантеження",
+                    Details = "Дані зберігаються у непральвиному форматі",
+                    Type = ResultType.Error,
+                };
+                return View("Result", resultViewModel);
+            }
+            catch (ValidationException validationException)
+            {
+                var resultViewModel = new ResultViewModel
+                {
+                    Type = ResultType.Error,
+                    Title = "Помилка при додаванні абонента",
+                    Details = validationException.Message
+                };
+                return View(viewName: "Result", resultViewModel);
+            }
         }
         [HttpGet]
-        public async Task<IActionResult> Remove([FromServices] ApplicationContext dbContext, [FromQuery] Guid id)
+        public async Task<IActionResult> Remove([FromQuery] Guid id)
         {
-            BaseConsumer? consumer = await dbContext.OrdinarConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
+            BaseConsumer? consumer = await _dbContext.OrdinarConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
             if (consumer is OrdinarConsumer ordinarConsumer)
             {
-                dbContext.OrdinarConsumers.Remove(ordinarConsumer);
+                _dbContext.OrdinarConsumers.Remove(ordinarConsumer);
             }
             else
             {
-                consumer = await dbContext.VIPConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
+                consumer = await _dbContext.VIPConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
                 if (consumer is VIPConsumer VIPconsumer)
                 {
-                    dbContext.VIPConsumers.Remove(VIPconsumer);
+                    _dbContext.VIPConsumers.Remove(VIPconsumer);
                 }
                 else
                 {
-                    await dbContext.SaveChangesAsync();
-                    await dbContext.DisposeAsync();
+                    await _dbContext.SaveChangesAsync();
                     return NotFound("Not found");
                 }
             }
-            await dbContext.SaveChangesAsync();
-            await dbContext.DisposeAsync();
+            await _dbContext.SaveChangesAsync();
             return LocalRedirect("~/Consumer/ViewAll");
         }
         [HttpGet]
-        public async Task<IActionResult> Add([FromServices] ApplicationContext dbContext)
+        public async Task<IActionResult> Add()
         {
             AddConsumerViewModel model = new AddConsumerViewModel();
-            model.TariffNames = dbContext.Tariffs.Select(t => t.Name).ToList() ?? new List<string?>();
+            model.TariffNames = _dbContext.Tariffs.Select(t => t.Name).ToList() ?? new List<string?>();
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Add([FromServices] ApplicationContext dbContext, [FromServices] IConsumerValidator validator, [FromServices] IRandomPhoneCallsGenerator randomPhoneCallsGenerator, [FromForm] string name)
+        public async Task<IActionResult> Add([FromServices] ApplicationContext _dbContext, [FromServices] IConsumerValidator validator, [FromServices] IRandomPhoneCallsGenerator randomPhoneCallsGenerator, [FromForm] string name)
         {
             var form = Request.Form;
             BaseConsumer consumer;
@@ -157,21 +208,21 @@ namespace MobileServiceProvider.Controllers
             {
                 if (consumer is OrdinarConsumer ordinarConsumer)
                 {
-                    await dbContext.OrdinarConsumers.AddAsync(ordinarConsumer);
+                    await _dbContext.OrdinarConsumers.AddAsync(ordinarConsumer);
                 }
                 else if (consumer is VIPConsumer VIPconsumer)
                 {
-                    await dbContext.VIPConsumers.AddAsync(VIPconsumer);
+                    await _dbContext.VIPConsumers.AddAsync(VIPconsumer);
                 }
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 if (consumer is OrdinarConsumer ordinarConsumer1)
                 {
-                    await randomPhoneCallsGenerator.GenerateFor(ordinarConsumer1, DateTimeOffset.Now);
+                    await randomPhoneCallsGenerator.GenerateForAsync(ordinarConsumer1, DateTimeOffset.Now);
                 }
                 else if (consumer is VIPConsumer VIPconsumer)
                 {
-                    await randomPhoneCallsGenerator.GenerateFor(VIPconsumer, DateTimeOffset.Now);
+                    await randomPhoneCallsGenerator.GenerateForAsync(VIPconsumer, DateTimeOffset.Now);
                 }
 
                 return View(viewName: "Result", new ResultViewModel

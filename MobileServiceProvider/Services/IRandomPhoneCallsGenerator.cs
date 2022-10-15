@@ -4,7 +4,8 @@ namespace MobileServiceProvider.Services
 {
     public interface IRandomPhoneCallsGenerator
     {
-        Task GenerateFor(OrdinarConsumer consumer, DateTimeOffset maxDate);
-        Task GenerateFor(VIPConsumer consumer, DateTimeOffset maxDate);
+        Task GenerateForAsync(BaseConsumer consumer, DateTimeOffset maxDate);
+        Task GenerateForAsync(OrdinarConsumer consumer, DateTimeOffset maxDate);
+        Task GenerateForAsync(VIPConsumer consumer, DateTimeOffset maxDate);
     }
 }

@@ -20,13 +20,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Consumer" asp-action="Add">Додати абонента</a>
+                            <a class="nav-link text-dark" asp-controller="Consumer" asp-action="Add">Додати абонента</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MobilePhone" asp-action="Charge">Поповнити мобільний</a>
+                            <a class="nav-link text-dark" asp-controller="Consumer" asp-action="UploadFromFile">Завантажити файл</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PhoneCalls" asp-action="ViewAll">Телефонні дзвінки</a>
+                            <a class="nav-link text-dark" asp-controller="MobilePhone" asp-action="Charge">Поповнити мобільний</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="PhoneCalls" asp-action="ViewAll">Телефонні дзвінки</a>
                         </li>
                     </ul>
                 </div>
