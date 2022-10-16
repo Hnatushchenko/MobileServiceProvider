@@ -7,11 +7,11 @@ namespace MobileServiceProvider.Services
 {
     public class ConsumerToViewModelConverter : IConsumerToViewModelConverter
     {
-        private readonly ApplicationContext dbContext;
+        private readonly ApplicationContext _dbContext;
 
         public ConsumerToViewModelConverter(ApplicationContext context, IDateTimeProvider dateTimeProvider)
         {
-            dbContext = context;
+            _dbContext = context;
         }
 
         public ViewAllModel Convert(BaseConsumer consumer, string dateAsString)
@@ -30,13 +30,13 @@ namespace MobileServiceProvider.Services
             if (consumer is OrdinarConsumer ordinarConsumer)
             {
                 model.PhoneNumbers.Add(ordinarConsumer.PhoneNumber);
-                model.MonthlyFee = dbContext.Tariffs.Where(tariff =>
+                model.MonthlyFee = _dbContext.Tariffs.Where(tariff =>
                     tariff.Name == consumer.TariffName).Single().MonthlyFeeForOrdinarConsumer;
             }
             else if (consumer is VIPConsumer VIPConsumer)
             {
                 model.PhoneNumbers = VIPConsumer.PhoneNumbers.Split(",").ToList();
-                model.MonthlyFee = dbContext.Tariffs.Where(tariff =>
+                model.MonthlyFee = _dbContext.Tariffs.Where(tariff =>
                     tariff.Name == consumer.TariffName).Single().MonthlyFeeForVIPConsumer;
                 model.MonthlyFee -= model.MonthlyFee * 0.1 * (model.PhoneNumbers.Count / 5);
                 model.MonthlyFee = Math.Round(model.MonthlyFee, 2);
@@ -51,6 +51,17 @@ namespace MobileServiceProvider.Services
 
             model.Status = model.Balance < 0 ? "Відключено" : "Підключено";
             return model;
+        }
+
+        public IEnumerable<ViewAllModel> ConvertMany(IEnumerable<BaseConsumer> consumers, string dateAsString)
+        {
+            List<ViewAllModel> models = new List<ViewAllModel>(consumers.Count());
+            foreach (var consumer in consumers)
+            {
+                var model = Convert(consumer, dateAsString);
+                models.Add(model);
+            }
+            return models;
         }
     }
 }

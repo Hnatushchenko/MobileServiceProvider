@@ -20,7 +20,6 @@ namespace MobileServiceProvider
             builder.Services.AddTransient<IConsumerToViewModelConverter, ConsumerToViewModelConverter>();
             builder.Services.AddSingleton<IViewAllModelSorter, ViewAllModelSorter>();
             builder.Services.AddSingleton<IDateTimeProvider, RealDateTimeProvider>();
-            builder.Services.AddTransient<IInitialDataProvider, InitialDataProvider>();
             builder.Services.AddTransient<ApplicationContext>();
 
             var app = builder.Build();

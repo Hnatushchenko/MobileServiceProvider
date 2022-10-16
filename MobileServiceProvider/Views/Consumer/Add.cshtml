@@ -1,9 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    @model AddConsumerViewModel;
-}
+﻿
+@model AddConsumerViewModel;
 
 <!DOCTYPE html>
 <html lang="uk">
@@ -80,7 +76,7 @@
     </style>
     <script>
         function HandleTypeChange() {
-            if (document.querySelector('input[name="type"]:checked').value === "ordinar") {
+            if (document.querySelector('input[name="consumerType"]:checked').value === "@ConsumerType.OrdinarConsumer") {
                 document.getElementById("phone-number-format-hint").hidden = true;
             }
             else
@@ -102,12 +98,12 @@
                 <label>Тип абонента:</label>
                 <div style="margin-bottom: 10px;">
                     <div>
-                        <input type="radio" name="type" id="ordinar" value="ordinar" onchange="HandleTypeChange()" required checked>
-                        <label for="ordinar">Звичайний</label>
+                        <input type="radio" name="consumerType" id="@ConsumerType.OrdinarConsumer" value="@ConsumerType.OrdinarConsumer" onchange="HandleTypeChange()" required checked>
+                        <label for="@ConsumerType.OrdinarConsumer">Звичайний</label>
                     </div>
                     <div>
-                        <input type="radio" name="type" id="VIP" value="VIP" onchange="HandleTypeChange()" required>
-                        <label for="VIP">Юридична особа</label>
+                        <input type="radio" name="consumerType" id="@ConsumerType.VIPConsumer" value="@ConsumerType.VIPConsumer" onchange="HandleTypeChange()" required>
+                        <label for="@ConsumerType.VIPConsumer">Юридична особа</label>
                     </div>
                 </div>
                 

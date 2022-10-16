@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MobileServiceProvider.Models;
 using MobileServiceProvider.Services;
+using System.Xml.Linq;
 
 namespace MobileServiceProvider.Repository
 {
@@ -13,7 +14,6 @@ namespace MobileServiceProvider.Repository
 
         public ApplicationContext()
         {
-            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -21,6 +21,33 @@ namespace MobileServiceProvider.Repository
         {
             optionsBuilder.UseSqlServer(
                 "Server=(localdb)\\mssqllocaldb;Database=MobileSeviceProviderDatabase;Trusted_Connection=True;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tariff>().HasData(
+                new Tariff
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Lite",
+                    MonthlyFeeForOrdinarConsumer = 100,
+                    MonthlyFeeForVIPConsumer = 80
+                },
+                new Tariff
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "LOVE UA",
+                    MonthlyFeeForOrdinarConsumer = 200,
+                    MonthlyFeeForVIPConsumer = 180
+                },
+                new Tariff
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "SuperNet",
+                    MonthlyFeeForOrdinarConsumer = 350,
+                    MonthlyFeeForVIPConsumer = 300
+                }
+            );
         }
     }
 }

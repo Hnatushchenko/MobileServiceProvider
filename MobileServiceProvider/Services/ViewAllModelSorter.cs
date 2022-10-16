@@ -4,14 +4,8 @@ namespace MobileServiceProvider.Services
 {
     public class ViewAllModelSorter : IViewAllModelSorter
     {
-        public IEnumerable<ViewAllModel> Sort(List<ViewAllModel> models, string propertyName, string order)
+        public IEnumerable<ViewAllModel> Sort(IEnumerable<ViewAllModel> models, string propertyName, string order)
         {
-            //if (propertyName is null || order is null)
-            //{
-            //    propertyName = "id";
-            //    order = "ascending";
-            //}
-
             if (propertyName == "phoneNumber")
             {
                 if (order == "ascending")

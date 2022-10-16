@@ -5,13 +5,9 @@ using MobileServiceProvider.Enums;
 using MobileServiceProvider.Repository;
 using MobileServiceProvider.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text.Json;
-using Microsoft.IdentityModel.Tokens;
-using System.Runtime.Serialization;
 
 namespace MobileServiceProvider.Controllers
 {
@@ -31,7 +27,7 @@ namespace MobileServiceProvider.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewAll([FromServices] ApplicationContext _dbContext)
+        public async Task<IActionResult> ViewAll()
         {
             List<BaseConsumer> consumers = new List<BaseConsumer>();
             _dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
@@ -45,8 +41,6 @@ namespace MobileServiceProvider.Controllers
                 });
             }
 
-            List<ViewAllModel> models = new List<ViewAllModel>(consumers.Count());
-
             string? date = Request.Query["date"];
             date ??= DateTime.Today.ToString("yyyy-MM-dd");
             ViewData["date"] = date;
@@ -59,14 +53,9 @@ namespace MobileServiceProvider.Controllers
             order ??= "ascending";
             ViewData["order"] = order;
 
-            foreach (var consumer in consumers)
-            {
-                ViewAllModel model = _converter.Convert(consumer, date);
-                models.Add(model);
-            }
-
-            var sortedModels = _sorter.Sort(models, orderBy, order);
-            return View(sortedModels);
+            var models = _converter.ConvertMany(consumers, date);
+            models = _sorter.Sort(models, orderBy, order);
+            return View(models);
         }
 
         [HttpGet]
@@ -74,6 +63,7 @@ namespace MobileServiceProvider.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> UploadFromFile([FromForm] IFormFileCollection Consumers, [FromForm] ConsumerType consumerType)
         {
@@ -155,50 +145,45 @@ namespace MobileServiceProvider.Controllers
             return LocalRedirect("~/Consumer/ViewAll");
         }
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public IActionResult Add()
         {
             AddConsumerViewModel model = new AddConsumerViewModel();
             model.TariffNames = _dbContext.Tariffs.Select(t => t.Name).ToList() ?? new List<string?>();
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Add([FromServices] ApplicationContext _dbContext, [FromServices] IConsumerValidator validator, [FromServices] IRandomPhoneCallsGenerator randomPhoneCallsGenerator, [FromForm] string name)
+        public async Task<IActionResult> Add([FromServices] IConsumerValidator validator, [FromServices] IRandomPhoneCallsGenerator randomPhoneCallsGenerator, [FromForm] ConsumerType consumerType)
         {
             var form = Request.Form;
             BaseConsumer consumer;
 
-            if (form["type"] == "ordinar")
+            consumer = consumerType switch
             {
-                consumer = new OrdinarConsumer();
-            }
-            else if (form["type"] == "VIP")
-            {
-                consumer = new VIPConsumer();
-            }
-            else
-            {
-                throw new ArgumentException($"Unknown type of consumer: {form["type"]}");
-            }
+                ConsumerType.OrdinarConsumer => new OrdinarConsumer(),
+                ConsumerType.VIPConsumer => new VIPConsumer(),
+                _ => throw new ArgumentException($"Unknown type of consumer: {form["type"]}")
+            };
 
             consumer.Id = Guid.NewGuid();
-            consumer.Name = name;
+            consumer.Name = form["name"];
             consumer.Surname = form["surname"];
             consumer.Patronymic = form["patronymic"];
             consumer.Address = form["address"];
             consumer.TariffName = form["tariff"];
             consumer.RegistrationDate = DateTime.ParseExact(form["registrationDate"], "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
+
             {
-            if (consumer is OrdinarConsumer ordinarConsumer)
-            {
-                ordinarConsumer!.PhoneNumber = form["phoneNumber"];
-                
-            }
-            else if (consumer is VIPConsumer VIPconsumer)
-            {
-                VIPconsumer!.PhoneNumbers = form["phoneNumber"];
-                
-            }
+                if (consumer is OrdinarConsumer ordinarConsumer)
+                {
+                    ordinarConsumer!.PhoneNumber = form["phoneNumber"];
+
+                }
+                else if (consumer is VIPConsumer VIPconsumer)
+                {
+                    VIPconsumer!.PhoneNumbers = form["phoneNumber"];
+
+                }
             }
 
 
@@ -214,33 +199,23 @@ namespace MobileServiceProvider.Controllers
                 {
                     await _dbContext.VIPConsumers.AddAsync(VIPconsumer);
                 }
-                await _dbContext.SaveChangesAsync();
 
-                if (consumer is OrdinarConsumer ordinarConsumer1)
-                {
-                    await randomPhoneCallsGenerator.GenerateForAsync(ordinarConsumer1, DateTimeOffset.Now);
-                }
-                else if (consumer is VIPConsumer VIPconsumer)
-                {
-                    await randomPhoneCallsGenerator.GenerateForAsync(VIPconsumer, DateTimeOffset.Now);
-                }
+                await _dbContext.SaveChangesAsync();
+                await randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
 
                 return View(viewName: "Result", new ResultViewModel
                 {
                     Type = ResultType.Success,
                     Title = "Абонент успішно доданий",
-                    Details = $"Абонент {form["surname"]} {name} {form["patronymic"]} успішно доданий"
+                    Details = $"Абонент {form["surname"]} {form["name"]} {form["patronymic"]} успішно доданий"
                 });
             }
-            else
+            return View(viewName: "Result", new ResultViewModel
             {
-                return View(viewName: "Result", new ResultViewModel
-                {
-                    Type = ResultType.Error,
-                    Title = "Помилка при додаванні абонента",
-                    Details = validationrResult!.ErrorMessage ?? ""
-                });
-            }
+                Type = ResultType.Error,
+                Title = "Помилка при додаванні абонента",
+                Details = validationrResult!.ErrorMessage ?? ""
+            });
         }
     }
 }
