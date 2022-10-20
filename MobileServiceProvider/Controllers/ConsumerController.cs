@@ -27,7 +27,7 @@ namespace MobileServiceProvider.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewAll()
+        public IActionResult ViewAll()
         {
             List<BaseConsumer> consumers = new List<BaseConsumer>();
             _dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
@@ -35,7 +35,7 @@ namespace MobileServiceProvider.Controllers
 
             if (consumers.Count() == 0)
             {
-                return View(viewName: "NoData", new ResultViewModel()
+                return View(viewName: "NoConsumers", new ResultViewModel()
                 {
                     Title = "Абоненти відсутні"
                 });

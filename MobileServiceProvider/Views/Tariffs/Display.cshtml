@@ -1,0 +1,48 @@
+﻿
+@model IEnumerable<Tariff>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Тарифи</title>
+	<style>
+		table {
+			width: 100%;
+		}
+		td, th {
+			border: 1px solid #cccccc;
+			padding: 8px;
+		}
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+	</style>
+</head>
+<body>
+	<div>
+        <table id="Table">
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Опис</th>
+                    <th>Абонентська плата для звичайних абонентів</th>
+                    <th>Абонентська плата для юридичних осіб</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tariff in @Model)
+                {
+                    <tr>
+                        <td>@tariff.Name</td>
+                        <td>@tariff.Description</td>
+                        <td>@tariff.MonthlyFeeForOrdinarConsumer</td>
+                        <td>@tariff.MonthlyFeeForVIPConsumer</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+	</div>
+</body>
+</html>
