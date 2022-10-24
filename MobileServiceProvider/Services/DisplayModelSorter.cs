@@ -2,9 +2,9 @@
 
 namespace MobileServiceProvider.Services
 {
-    public class ViewAllModelSorter : IViewAllModelSorter
+    public class DisplayModelSorter : IDisplayModelSorter
     {
-        public IEnumerable<ViewAllModel> Sort(IEnumerable<ViewAllModel> models, string propertyName, string order)
+        public IEnumerable<DisplayModel> Sort(IEnumerable<DisplayModel> models, string propertyName, string order)
         {
             if (propertyName == "phoneNumber")
             {
@@ -37,7 +37,7 @@ namespace MobileServiceProvider.Services
                         "phoneNumber" => models.OrderBy(model => model.PhoneNumbers.First()),
                         "monthlyFee" => models.OrderBy(model => model.MonthlyFee),
                         "balance" => models.OrderBy(model => model.Balance),
-                        _ => throw new ArgumentException($"ViewAllModel doesn't contain a \"{propertyName}\" property.")
+                        _ => throw new ArgumentException($"DisplayModel doesn't contain a \"{propertyName}\" property.")
                     };
                 case "descending":
                     return propertyName switch
@@ -50,11 +50,11 @@ namespace MobileServiceProvider.Services
                         "phoneNumber" => models.OrderByDescending(model => model.PhoneNumbers.First()),
                         "monthlyFee" => models.OrderByDescending(model => model.MonthlyFee),
                         "balance" => models.OrderByDescending(model => model.Balance),
-                        _ => throw new ArgumentException($"ViewAllModel doesn't contain a \"{propertyName}\" property.")
+                        _ => throw new ArgumentException($"DisplayModel doesn't contain a \"{propertyName}\" property.")
 
                     };
                 default:
-                    throw new ArgumentException($"Order cannot be \"{order}\" in ViewAllModelSorter");
+                    throw new ArgumentException($"Order cannot be \"{order}\".");
             }
         }
     }

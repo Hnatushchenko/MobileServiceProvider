@@ -5,20 +5,20 @@ using System.Globalization;
 
 namespace MobileServiceProvider.Services
 {
-    public class ConsumerToViewModelConverter : IConsumerToViewModelConverter
+    public class ConsumerToDisplayModelConverter : IConsumerToDisplayModelConverter
     {
         private readonly ApplicationContext _dbContext;
 
-        public ConsumerToViewModelConverter(ApplicationContext context)
+        public ConsumerToDisplayModelConverter(ApplicationContext context)
         {
             _dbContext = context;
         }
 
-        public ViewAllModel Convert(BaseConsumer consumer, string dateAsString)
+        public DisplayModel Convert(BaseConsumer consumer, string dateAsString)
         {
             DateTime date = DateTime.ParseExact(dateAsString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            ViewAllModel model = new ViewAllModel()
+            DisplayModel model = new DisplayModel()
             {
                 Id = consumer.Id,
                 Name = consumer.Name,
@@ -53,9 +53,9 @@ namespace MobileServiceProvider.Services
             return model;
         }
 
-        public IEnumerable<ViewAllModel> ConvertMany(IEnumerable<BaseConsumer> consumers, string dateAsString)
+        public IEnumerable<DisplayModel> ConvertMany(IEnumerable<BaseConsumer> consumers, string dateAsString)
         {
-            List<ViewAllModel> models = new List<ViewAllModel>(consumers.Count());
+            List<DisplayModel> models = new List<DisplayModel>(consumers.Count());
             foreach (var consumer in consumers)
             {
                 var model = Convert(consumer, dateAsString);

@@ -14,20 +14,20 @@ namespace MobileServiceProvider.Controllers
     public class ConsumerController : Controller
     {
         private readonly IRandomPhoneCallsGenerator _randomPhoneCallsGenerator;
-        private readonly IViewAllModelSorter _sorter;
-        private readonly IConsumerToViewModelConverter _converter;
+        private readonly IDisplayModelSorter _sorter;
+        private readonly IConsumerToDisplayModelConverter _converter;
         private readonly ApplicationContext _dbContext;
 
-        public ConsumerController(IViewAllModelSorter viewAllModelSorter, IConsumerToViewModelConverter converter, ApplicationContext dbContext, IRandomPhoneCallsGenerator randomPhoneCallsGenerator)
+        public ConsumerController(IDisplayModelSorter displayModelSorter, IConsumerToDisplayModelConverter converter, ApplicationContext dbContext, IRandomPhoneCallsGenerator randomPhoneCallsGenerator)
         {
             _converter = converter;
-            _sorter = viewAllModelSorter;
+            _sorter = displayModelSorter;
             _dbContext = dbContext;
             _randomPhoneCallsGenerator = randomPhoneCallsGenerator;
         }
 
         [HttpGet]
-        public IActionResult ViewAll()
+        public IActionResult Display()
         {
             List<BaseConsumer> consumers = new List<BaseConsumer>();
             _dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
@@ -142,7 +142,7 @@ namespace MobileServiceProvider.Controllers
                 }
             }
             await _dbContext.SaveChangesAsync();
-            return LocalRedirect("~/Consumer/ViewAll");
+            return LocalRedirect("~/Consumer/Display");
         }
         [HttpGet]
         public IActionResult Add()

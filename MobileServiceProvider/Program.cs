@@ -17,8 +17,8 @@ namespace MobileServiceProvider
             builder.Services.AddTransient<IRandomDateGenerator, RandomDateGenerator>();
             builder.Services.AddTransient<IRandomPhoneNumberGenerator, RandomPhoneNumberGenerator>();
             builder.Services.AddTransient<IConsumerValidator, ConsumerValidator>();
-            builder.Services.AddTransient<IConsumerToViewModelConverter, ConsumerToViewModelConverter>();
-            builder.Services.AddSingleton<IViewAllModelSorter, ViewAllModelSorter>();
+            builder.Services.AddTransient<IConsumerToDisplayModelConverter, ConsumerToDisplayModelConverter>();
+            builder.Services.AddSingleton<IDisplayModelSorter, DisplayModelSorter>();
             builder.Services.AddTransient<ApplicationContext>();
 
             var app = builder.Build();
@@ -43,7 +43,7 @@ namespace MobileServiceProvider
                 );
             app.MapControllerRoute( 
                 name: "default",
-                pattern: "{controller=Consumer}/{action=ViewAll}");
+                pattern: "{controller=Consumer}/{action=Display}");
 
             app.Run();
         }

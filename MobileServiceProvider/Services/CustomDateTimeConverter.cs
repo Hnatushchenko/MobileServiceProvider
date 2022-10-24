@@ -16,7 +16,7 @@ namespace MobileServiceProvider.Services
         }
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return DateTime.ParseExact(reader.GetString(), Format, null);
+            return DateTime.ParseExact(reader!.GetString(), Format, null);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MobileServiceProvider.Models
 {
-	public class ViewAllModel
+	public class DisplayModel
 	{
         public Guid Id { get; set; }
         public string? Name { get; set; }
