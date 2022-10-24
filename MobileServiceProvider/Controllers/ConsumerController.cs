@@ -172,32 +172,27 @@ namespace MobileServiceProvider.Controllers
             consumer.TariffName = form["tariff"];
             consumer.RegistrationDate = DateTime.ParseExact(form["registrationDate"], "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-
+            if (consumer is OrdinarConsumer ordinarConsumer)
             {
-                if (consumer is OrdinarConsumer ordinarConsumer)
-                {
-                    ordinarConsumer!.PhoneNumber = form["phoneNumber"];
+                ordinarConsumer!.PhoneNumber = form["phoneNumber"];
 
-                }
-                else if (consumer is VIPConsumer VIPconsumer)
-                {
-                    VIPconsumer!.PhoneNumbers = form["phoneNumber"];
-
-                }
             }
-
+            else if (consumer is VIPConsumer VIPconsumer)
+            {
+                VIPconsumer!.PhoneNumbers = form["phoneNumber"];
+            }
 
             ValidationResult? validationrResult = validator.Validate(consumer);
 
             if (validationrResult == ValidationResult.Success)
             {
-                if (consumer is OrdinarConsumer ordinarConsumer)
+                if (consumerType == ConsumerType.OrdinarConsumer)
                 {
-                    await _dbContext.OrdinarConsumers.AddAsync(ordinarConsumer);
+                    await _dbContext.OrdinarConsumers.AddAsync((OrdinarConsumer)consumer);
                 }
-                else if (consumer is VIPConsumer VIPconsumer)
+                else if (consumerType == ConsumerType.VIPConsumer)
                 {
-                    await _dbContext.VIPConsumers.AddAsync(VIPconsumer);
+                    await _dbContext.VIPConsumers.AddAsync((VIPConsumer)consumer);
                 }
 
                 await _dbContext.SaveChangesAsync();
