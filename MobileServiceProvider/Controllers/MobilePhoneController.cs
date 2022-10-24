@@ -7,6 +7,13 @@ namespace MobileServiceProvider.Controllers
 {
     public class MobilePhoneController : Controller
     {
+        private readonly ApplicationContext _dbContext;
+
+        public MobilePhoneController(ApplicationContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         [HttpGet]
         public IActionResult Charge()
         {
@@ -14,7 +21,7 @@ namespace MobileServiceProvider.Controllers
         }
 
         [HttpPost] 
-        public IActionResult ChargeResult([FromServices] ApplicationContext dbContext)
+        public IActionResult ChargeResult()
         {
             string phoneNumber = Request.Form["phoneNumber"];
             string sumAsString = Request.Form["sum"];
@@ -34,10 +41,10 @@ namespace MobileServiceProvider.Controllers
                 });
             }
 
-            BaseConsumer? consumer = dbContext.OrdinarConsumers.SingleOrDefault(consumer => consumer.PhoneNumber == phoneNumber);
+            BaseConsumer? consumer = _dbContext.OrdinarConsumers.SingleOrDefault(consumer => consumer.PhoneNumber == phoneNumber);
             if (consumer == null)
             {
-                consumer = dbContext.VIPConsumers.SingleOrDefault(consumer => consumer.PhoneNumbers.Contains(phoneNumber));
+                consumer = _dbContext.VIPConsumers.SingleOrDefault(consumer => consumer.PhoneNumbers.Contains(phoneNumber));
             }
             if (consumer == null)
             {
@@ -48,7 +55,7 @@ namespace MobileServiceProvider.Controllers
                     Details = $"Абонента з мобільним номером {phoneNumber} не знайдено." });
             }
             consumer.TotalMoney += sum;
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return View(new ResultViewModel 
             { 
