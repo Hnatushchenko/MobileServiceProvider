@@ -31,7 +31,7 @@ namespace MobileServiceProvider.Services
                                                   _options);
             if (consumers is null)
             {
-                throw new JsonException("Cannot deserialize the file with ordinar consumers");
+                throw new JsonException("Cannot deserialize the file with consumers");
             }
 
             foreach (TConsumer consumer in consumers)
