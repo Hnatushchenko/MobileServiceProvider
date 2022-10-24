@@ -9,7 +9,7 @@ namespace MobileServiceProvider.Services
     {
         private readonly ApplicationContext _dbContext;
 
-        public ConsumerToViewModelConverter(ApplicationContext context, IDateTimeProvider dateTimeProvider)
+        public ConsumerToViewModelConverter(ApplicationContext context)
         {
             _dbContext = context;
         }
