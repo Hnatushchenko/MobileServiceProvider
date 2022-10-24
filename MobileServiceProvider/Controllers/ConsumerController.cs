@@ -142,7 +142,7 @@ namespace MobileServiceProvider.Controllers
                 }
             }
             await _dbContext.SaveChangesAsync();
-            return LocalRedirect("~/Consumer/Display");
+            return LocalRedirect("~/Consumer/Display"); 
         }
         [HttpGet]
         public IActionResult Add()
@@ -152,7 +152,7 @@ namespace MobileServiceProvider.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Add([FromServices] IConsumerValidator validator, [FromServices] IRandomPhoneCallsGenerator randomPhoneCallsGenerator, [FromForm] ConsumerType consumerType)
+        public async Task<IActionResult> Add([FromServices] IConsumerValidator validator, [FromForm] ConsumerType consumerType)
         {
             var form = Request.Form;
             BaseConsumer consumer;
@@ -196,7 +196,7 @@ namespace MobileServiceProvider.Controllers
                 }
 
                 await _dbContext.SaveChangesAsync();
-                await randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
+                await _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
 
                 return View(viewName: "Result", new ResultViewModel
                 {
