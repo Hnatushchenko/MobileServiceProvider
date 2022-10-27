@@ -99,12 +99,22 @@ namespace MobileServiceProvider.Controllers
                 };
                 return View("Result", resultViewModel);
             }
+            catch (InvalidOperationException)
+            {
+                ResultViewModel resultViewModel = new ResultViewModel
+                {
+                    Title = "Помилка завантеження",
+                    Details = "Жоден файл не було вибрано.",
+                    Type = ResultType.Error,
+                };
+                return View("Result", resultViewModel);
+            }
             catch (JsonException)
             {
                 ResultViewModel resultViewModel = new ResultViewModel
                 {
                     Title = "Помилка завантеження",
-                    Details = "Дані зберігаються у непральвиному форматі",
+                    Details = "Дані зберігаються у непральвиному форматі. Файл повинен містити розширення .json.",
                     Type = ResultType.Error,
                 };
                 return View("Result", resultViewModel);
