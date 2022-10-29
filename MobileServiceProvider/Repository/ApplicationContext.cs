@@ -30,6 +30,7 @@ namespace MobileServiceProvider.Repository
                 {
                     Id = Guid.NewGuid(),
                     Name = "Lite",
+                    Description = "5 ГБ мобільний інтернет. Безлім дзвінки. 100 хв дзвінки за кордон.",
                     MonthlyFeeForOrdinarConsumer = 100,
                     MonthlyFeeForVIPConsumer = 80
                 },
@@ -37,6 +38,7 @@ namespace MobileServiceProvider.Repository
                 {
                     Id = Guid.NewGuid(),
                     Name = "LOVE UA",
+                    Description = "15 ГБ мобільний інтернет. Безлім дзвінки. 200 хв дзвінки за кордон.",
                     MonthlyFeeForOrdinarConsumer = 200,
                     MonthlyFeeForVIPConsumer = 180
                 },
@@ -44,6 +46,7 @@ namespace MobileServiceProvider.Repository
                 {
                     Id = Guid.NewGuid(),
                     Name = "SuperNet",
+                    Description = "Безлім мобільний інтернет. Безлім дзвінки. 250 хв дзвінки за кордон.",
                     MonthlyFeeForOrdinarConsumer = 350,
                     MonthlyFeeForVIPConsumer = 300
                 }
