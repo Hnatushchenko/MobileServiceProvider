@@ -1,18 +1,30 @@
 ﻿<style>
-    .content {
+    main {
         position: absolute;
         top: 50%;
         left: 50%;
         -ms-transform: translateX(-50%) translateY(-50%);
         -webkit-transform: translate(-50%,-50%);
         transform: translate(-50%,-50%);
+        background-color: #FBFBFB;
+        padding-top: 15px;
+        padding-left: 15px;
+        padding-bottom: 20px; 
+        border-radius: 6px;
+        width: 450px
+    }
+
+    #submit-button {
+        border-color: #767676;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 2px;
     }
 </style>
 <title>Завантажити файл</title>
 
 <div class="body">
-    <div class="content">
-
+    <main>
         <form method="post" asp-controller="Consumer" asp-action="UploadFromFile" enctype="multipart/form-data">
             <label>Тип абонента:</label>
                 <div style="margin-bottom: 10px;">
@@ -26,8 +38,8 @@
                     </div>
                 </div>
             <input type="file" name="Consumers">
-            <button type="submit">Завантажити</button>
+            <button type="submit" id="submit-button">Завантажити</button>
         </form>
-    </div>
+    </main>
 </div>
 
