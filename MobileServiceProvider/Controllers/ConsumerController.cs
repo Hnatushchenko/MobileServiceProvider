@@ -8,39 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text.Json;
+using MobileServiceProvider.Exceptions;
 
 namespace MobileServiceProvider.Controllers
 {
     public class ConsumerController : Controller
     {
-        private readonly IRandomPhoneCallsGenerator _randomPhoneCallsGenerator;
-        private readonly IDisplayModelSorter _sorter;
-        private readonly IConsumerToDisplayModelConverter _converter;
+        private readonly IConsumersService _consumersService;
         private readonly ApplicationContext _dbContext;
 
-        public ConsumerController(IDisplayModelSorter displayModelSorter, IConsumerToDisplayModelConverter converter, ApplicationContext dbContext, IRandomPhoneCallsGenerator randomPhoneCallsGenerator)
+        public ConsumerController(ApplicationContext dbContext, IConsumersService consumersService)
         {
-            _converter = converter;
-            _sorter = displayModelSorter;
             _dbContext = dbContext;
-            _randomPhoneCallsGenerator = randomPhoneCallsGenerator;
+            _consumersService = consumersService;
         }
 
         [HttpGet]
         public IActionResult Display()
         {
-            List<BaseConsumer> consumers = new List<BaseConsumer>();
-            _dbContext.OrdinarConsumers.ToList().ForEach(consumers.Add);
-            _dbContext.VIPConsumers.ToList().ForEach(consumers.Add);
-
-            if (consumers.Count() == 0)
-            {
-                return View(viewName: "NoConsumers", new ResultViewModel()
-                {
-                    Title = "Абоненти відсутні"
-                });
-            }
-
             string? date = Request.Query["date"];
             date ??= DateTime.Today.ToString("yyyy-MM-dd");
             ViewData["date"] = date;
@@ -53,8 +38,16 @@ namespace MobileServiceProvider.Controllers
             order ??= "ascending";
             ViewData["order"] = order;
 
-            var models = _converter.ConvertMany(consumers, date);
-            models = _sorter.Sort(models, orderBy, order);
+            var models = _consumersService.GetDisplayModels(date, order, orderBy);
+            
+            if (models.Count() == 0)
+            {
+                return View(viewName: "NoConsumers", new ResultViewModel()
+                {
+                    Title = "Абоненти відсутні"
+                });
+            }
+
             return View(models);
         }
 
@@ -67,41 +60,15 @@ namespace MobileServiceProvider.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFromFile([FromForm] IFormFileCollection Consumers, [FromForm] ConsumerType consumerType)
         {
+            ResultViewModel resultViewModel;
             try
             {
                 IFormFile file = Consumers.Single();
-                if (consumerType == ConsumerType.OrdinarConsumer)
-                {
-                    IConsumersFromFileLoader<OrdinarConsumer> loader = HttpContext.RequestServices.GetRequiredService<IConsumersFromFileLoader<OrdinarConsumer>>();
-                    OrdinarConsumer[] consumers = await loader.LoadAsync(file);
-                    await _dbContext.OrdinarConsumers.AddRangeAsync(consumers);
-                    await _dbContext.SaveChangesAsync();
-                    foreach (var consumer in consumers)
-                    {
-                        await _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
-                    }
-                }
-                else if (consumerType == ConsumerType.VIPConsumer)
-                {
-                    IConsumersFromFileLoader<VIPConsumer> loader = HttpContext.RequestServices.GetRequiredService<IConsumersFromFileLoader<VIPConsumer>>();
-                    VIPConsumer[] consumers = await loader.LoadAsync(file);
-                    await _dbContext.VIPConsumers.AddRangeAsync(consumers);
-                    await _dbContext.SaveChangesAsync();
-                    foreach (var consumer in consumers)
-                    {
-                        await _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
-                    }
-                }
-                ResultViewModel resultViewModel = new ResultViewModel
-                {
-                    Title = "Абоненти успішно додані",
-                    Type = ResultType.Success,
-                };
-                return View("Result", resultViewModel);
+                await _consumersService.UploadFromFileAsync(file, consumerType);
             }
             catch (InvalidOperationException)
             {
-                ResultViewModel resultViewModel = new ResultViewModel
+                resultViewModel = new ResultViewModel
                 {
                     Title = "Помилка завантеження",
                     Details = "Жоден файл не було вибрано.",
@@ -111,7 +78,7 @@ namespace MobileServiceProvider.Controllers
             }
             catch (JsonException)
             {
-                ResultViewModel resultViewModel = new ResultViewModel
+                resultViewModel = new ResultViewModel
                 {
                     Title = "Помилка завантеження",
                     Details = "Дані зберігаються у непральвиному форматі. Файл повинен містити розширення .json.",
@@ -121,7 +88,7 @@ namespace MobileServiceProvider.Controllers
             }
             catch (ValidationException validationException)
             {
-                var resultViewModel = new ResultViewModel
+                resultViewModel = new ResultViewModel
                 {
                     Type = ResultType.Error,
                     Title = "Помилка при додаванні абонента",
@@ -129,29 +96,25 @@ namespace MobileServiceProvider.Controllers
                 };
                 return View(viewName: "Result", resultViewModel);
             }
+            resultViewModel = new ResultViewModel
+            {
+                Title = "Абоненти успішно додані",
+                Type = ResultType.Success,
+            };
+            return View("Result", resultViewModel);
         }
         [HttpGet]
         public async Task<IActionResult> Remove([FromQuery] Guid id)
         {
-            BaseConsumer? consumer = await _dbContext.OrdinarConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
-            if (consumer is OrdinarConsumer ordinarConsumer)
+            try
             {
-                _dbContext.OrdinarConsumers.Remove(ordinarConsumer);
+                await _consumersService.RemoveAsync(id);
             }
-            else
+            catch (ConsumerNotFoundException)
             {
-                consumer = await _dbContext.VIPConsumers.SingleOrDefaultAsync(consumer => consumer.Id == id);
-                if (consumer is VIPConsumer VIPconsumer)
-                {
-                    _dbContext.VIPConsumers.Remove(VIPconsumer);
-                }
-                else
-                {
-                    await _dbContext.SaveChangesAsync();
-                    return NotFound("Not found");
-                }
+                return NotFound("Not found");
             }
-            await _dbContext.SaveChangesAsync();
+            
             return LocalRedirect("~/Consumer/Display"); 
         }
         [HttpGet]
@@ -165,61 +128,25 @@ namespace MobileServiceProvider.Controllers
         public async Task<IActionResult> Add([FromServices] IConsumerValidator validator, [FromForm] ConsumerType consumerType)
         {
             var form = Request.Form;
-            BaseConsumer consumer;
-
-            consumer = consumerType switch
+            try
             {
-                ConsumerType.OrdinarConsumer => new OrdinarConsumer(),
-                ConsumerType.VIPConsumer => new VIPConsumer(),
-                _ => throw new ArgumentException($"Unknown type of consumer: {form["type"]}")
-            };
-
-            consumer.Id = Guid.NewGuid();
-            consumer.Name = form["name"];
-            consumer.Surname = form["surname"];
-            consumer.Patronymic = form["patronymic"];
-            consumer.Address = form["address"];
-            consumer.TariffName = form["tariff"];
-            consumer.RegistrationDate = DateTime.ParseExact(form["registrationDate"], "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-            if (consumer is OrdinarConsumer ordinarConsumer)
-            {
-                ordinarConsumer!.PhoneNumber = form["phoneNumber"];
-
+                await _consumersService.AddAsync(consumerType, form["name"], form["surname"], form["patronymic"], form["address"], form["tariff"],
+                form["registrationDate"], form["phoneNumber"]);
             }
-            else if (consumer is VIPConsumer VIPconsumer)
+            catch (ValidationException validationException)
             {
-                VIPconsumer!.PhoneNumbers = form["phoneNumber"];
-            }
-
-            ValidationResult? validationrResult = validator.Validate(consumer);
-
-            if (validationrResult == ValidationResult.Success)
-            {
-                if (consumerType == ConsumerType.OrdinarConsumer)
-                {
-                    await _dbContext.OrdinarConsumers.AddAsync((OrdinarConsumer)consumer);
-                }
-                else if (consumerType == ConsumerType.VIPConsumer)
-                {
-                    await _dbContext.VIPConsumers.AddAsync((VIPConsumer)consumer);
-                }
-
-                await _dbContext.SaveChangesAsync();
-                await _randomPhoneCallsGenerator.GenerateForAsync(consumer, DateTimeOffset.Now);
-
                 return View(viewName: "Result", new ResultViewModel
                 {
-                    Type = ResultType.Success,
-                    Title = "Абонент успішно доданий",
-                    Details = $"Абонент {form["surname"]} {form["name"]} {form["patronymic"]} успішно доданий"
+                    Type = ResultType.Error,
+                    Title = "Помилка при додаванні абонента",
+                    Details = validationException.Message
                 });
             }
             return View(viewName: "Result", new ResultViewModel
             {
-                Type = ResultType.Error,
-                Title = "Помилка при додаванні абонента",
-                Details = validationrResult!.ErrorMessage ?? ""
+                Type = ResultType.Success,
+                Title = "Абонент успішно доданий",
+                Details = $"Абонент {form["surname"]} {form["name"]} {form["patronymic"]} успішно доданий"
             });
         }
     }
