@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MobileServiceProvider.Models;
 using MobileServiceProvider.Enums;
-using MobileServiceProvider.Repository;
+using MobileServiceProvider.Services;
+using MobileServiceProvider.Exceptions;
 
 namespace MobileServiceProvider.Controllers
 {
     public class MobilePhoneController : Controller
     {
-        private readonly ApplicationContext _dbContext;
+        private readonly IMobilePhoneService _mobilePhoneService;
 
-        public MobilePhoneController(ApplicationContext dbContext)
+        public MobilePhoneController(IMobilePhoneService mobilePhoneService)
         {
-            _dbContext = dbContext;
+            _mobilePhoneService = mobilePhoneService;
         }
 
         [HttpGet]
@@ -24,39 +25,30 @@ namespace MobileServiceProvider.Controllers
         public IActionResult ChargeResult()
         {
             string phoneNumber = Request.Form["phoneNumber"];
-            string sumAsString = Request.Form["sum"];
-            double sum;
-            
+            string sum = Request.Form["sum"];
+
             try
             {
-                sum = Convert.ToDouble(sumAsString);
+                _mobilePhoneService.Charge(phoneNumber, sum);
             }
             catch (FormatException)
-            {
-                return View(new ResultViewModel
-                { 
-                    Type = ResultType.Error, 
-                    Title = "Помилка поповнення",
-                    Details = $"Неможливо перетворити \"{sumAsString}\" у число."
-                });
-            }
-
-            BaseConsumer? consumer = _dbContext.OrdinarConsumers.SingleOrDefault(consumer => consumer.PhoneNumber == phoneNumber);
-            if (consumer == null)
-            {
-                consumer = _dbContext.VIPConsumers.SingleOrDefault(consumer => consumer.PhoneNumbers.Contains(phoneNumber));
-            }
-            if (consumer == null)
             {
                 return View(new ResultViewModel
                 {
                     Type = ResultType.Error,
                     Title = "Помилка поповнення",
-                    Details = $"Абонента з мобільним номером {phoneNumber} не знайдено." });
+                    Details = $"Неможливо перетворити \"{sum}\" у число."
+                });
             }
-            consumer.TotalMoney += sum;
-            _dbContext.SaveChanges();
-
+            catch (ConsumerNotFoundException)
+            {
+                return View(new ResultViewModel
+                {
+                    Type = ResultType.Error,
+                    Title = "Помилка поповнення",
+                    Details = $"Абонента з мобільним номером {phoneNumber} не знайдено."
+                });
+            }
             return View(new ResultViewModel 
             { 
                 Type = ResultType.Success, 
