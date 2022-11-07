@@ -1,27 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MobileServiceProvider.Models;
-using MobileServiceProvider.Repository;
+using MobileServiceProvider.Services;
 
 namespace MobileServiceProvider.Controllers
 {
     public class PhoneCallsController : Controller
     {
-        private readonly ApplicationContext _dbContext;
-        public PhoneCallsController(ApplicationContext dbContext)
+        IPhoneCallsService _phoneCallsService;
+
+        public PhoneCallsController(IPhoneCallsService phoneCallsService)
         {
-            _dbContext = dbContext;
+            _phoneCallsService = phoneCallsService;
         }
 
         [HttpGet]
         public IActionResult Display([FromQuery] Guid? consumerId)
         {
-            IEnumerable<PhoneCallInfo> phoneCalls = _dbContext.PhoneCalls
-                                                 .OrderBy(d => d.StartDate);
-
-            if (consumerId is not null)
-            {
-                phoneCalls = phoneCalls.Where(call => call.ConsumerId == consumerId);
-            }
+            var phoneCalls = _phoneCallsService.GetPhoneCalls(consumerId);
 
             if (phoneCalls.Count() == 0)
             {

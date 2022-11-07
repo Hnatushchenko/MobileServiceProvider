@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MobileServiceProvider.Repository;
+using MobileServiceProvider.Services;
 
 namespace MobileServiceProvider.Controllers
 {
     public class TariffsController : Controller
     {
-        ApplicationContext _dbContext;
-        public TariffsController(ApplicationContext dbContext)
+        ITariffsService _tariffsService;
+
+        public TariffsController(ITariffsService tariffsService)
         {
-            _dbContext = dbContext;
+            _tariffsService = tariffsService;
         }
 
-        public async Task<IActionResult> Display()
+        public IActionResult Display()
         {
-            var tariffs = await _dbContext.Tariffs.AsNoTracking().ToListAsync();
+            var tariffs = _tariffsService.GetAllTariffs();
             return View(tariffs);
         }
     }

@@ -21,6 +21,8 @@ namespace MobileServiceProvider
             builder.Services.AddSingleton<IDisplayModelSorter, DisplayModelSorter>();
             builder.Services.AddTransient<IConsumersService, ConsumersService>();
             builder.Services.AddTransient<IMobilePhoneService, MobilePhoneService>();
+            builder.Services.AddTransient<ITariffsService, TariffsService>();
+            builder.Services.AddTransient<IPhoneCallsService, PhoneCallsService>();
             builder.Services.AddTransient<ApplicationContext>();
 
             var app = builder.Build();

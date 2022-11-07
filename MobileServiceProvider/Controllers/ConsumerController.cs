@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using MobileServiceProvider.Models;
 using MobileServiceProvider.Enums;
-using MobileServiceProvider.Repository;
 using MobileServiceProvider.Services;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Text.Json;
 using MobileServiceProvider.Exceptions;
 
@@ -15,12 +11,12 @@ namespace MobileServiceProvider.Controllers
     public class ConsumerController : Controller
     {
         private readonly IConsumersService _consumersService;
-        private readonly ApplicationContext _dbContext;
+        private readonly ITariffsService _tariffsService;
 
-        public ConsumerController(ApplicationContext dbContext, IConsumersService consumersService)
+        public ConsumerController(IConsumersService consumersService, ITariffsService tariffsService)
         {
-            _dbContext = dbContext;
             _consumersService = consumersService;
+            _tariffsService = tariffsService;
         }
 
         [HttpGet]
@@ -121,7 +117,7 @@ namespace MobileServiceProvider.Controllers
         public IActionResult Add()
         {
             AddConsumerViewModel model = new AddConsumerViewModel();
-            model.TariffNames = _dbContext.Tariffs.Select(t => t.Name).ToList() ?? new List<string?>();
+            model.TariffNames = _tariffsService.GetTariffNames().ToList();
             return View(model);
         }
         [HttpPost]
