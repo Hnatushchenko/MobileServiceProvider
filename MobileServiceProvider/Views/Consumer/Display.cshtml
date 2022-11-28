@@ -72,6 +72,10 @@
 			margin-left: auto; 
 			margin-right: 0;
 		}
+		.remove-icon button {
+			background-color: inherit;
+			border-style: none;
+		}
 
 	</style>
 		
@@ -82,11 +86,36 @@
 
 			const selectOrderList = document.getElementById("selectedOrder");
             selectOrderList.value = '@ViewData["order"]';
+
+			const removeButtons = document.querySelectorAll(".remove-icon button");
+			for (const button of removeButtons)
+			{
+				button.addEventListener("click", removeClient);
+			}
 		} 
 
 		
-		function removeClient(id) {
-			location.href = window.location.origin + "/Consumer/Remove?id=" + id;
+		async function removeClient(event) {
+			const button = event.target;
+			const row = button.parentNode.parentNode.parentNode.parentNode;
+			const tableBody = row.parentNode;
+			tableBody.removeChild(row);
+
+			let consumerId = button.getAttribute("id");
+
+			fetch(`/Consumer/Delete/${consumerId}`, {
+				method: "DELETE"
+			}).then(responce => 
+			{
+				if (responce.ok) {
+				console.log("Deleted");
+				}
+				else {
+					console.log("Not deleted");
+				}
+			});
+
+			
 		}
 		
 		function inputChangedHandler() {
@@ -166,9 +195,7 @@
 						<td class="remove-cell">
 							<div class="actions-containder">
 								<div class="remove-icon">
-									<a asp-controller="Consumer" asp-action="Remove" asp-route-id="@consumer.Id.ToString()">
-										❌
-									</a>									
+									<button id="@consumer.Id.ToString()">❌</button>									
 									<div class="tip">
 										Вилучити
 									</div>

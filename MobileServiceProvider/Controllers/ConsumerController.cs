@@ -99,8 +99,9 @@ namespace MobileServiceProvider.Controllers
             };
             return View("Result", resultViewModel);
         }
-        [HttpGet]
-        public async Task<IActionResult> Remove([FromQuery] Guid id)
+        [Route("Consumer/Delete/{id:guid}")]
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
@@ -111,7 +112,7 @@ namespace MobileServiceProvider.Controllers
                 return NotFound("Not found");
             }
             
-            return LocalRedirect("~/Consumer/Display"); 
+            return Ok(); 
         }
         [HttpGet]
         public IActionResult Add()
